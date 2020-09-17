@@ -1,0 +1,51 @@
+@import "./colors";
+@import "./breakpoints";
+
+$border-width: 2px;
+$border-radius: 10px;
+
+.tabContainer {
+    .tabList {
+        border: $border-width solid $verde;
+        border-radius: $border-radius;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        list-style: none;
+        padding: 0;
+        overflow: hidden;
+        
+        @include breakpoint(tablet) {
+            margin: 0 auto;
+            width: 80%;
+        }
+
+        @include breakpoint(laptop) {
+            margin: 0 auto;
+            width: 80%;
+        }
+
+        @include breakpoint(desktop) {
+            margin: 0 auto;
+            width: 80%;
+        }
+
+        .tabElement {
+            border-right: $border-width solid $verde;
+            margin: 0;
+            padding: 0.5em;
+            text-align: center;
+            width: 50%;
+
+            &:last-child {
+                border-right: unset;
+            }
+
+            &:hover, &.active {
+                background: lighten($verde, 25);
+                color: $verde;
+                text-decoration: underline;
+            }
+        }
+    }
+}

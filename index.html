@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="shortcut icon" href="http://www.atlasnacionalderiesgos.gob.mx/Imagenes/Logos/cenapred_icon.ico"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Rutas del Volcán Popocatépetl</title>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="./lib/handlebars/handlebars-v4.1.1.js"></script>
+    <script src="https://js.arcgis.com/4.13/"></script>
+    <script src="./js/animaciones.js"></script>
+  
+    <link rel="stylesheet" href="https://unpkg.com/mapillary-js@2.18.0/dist/mapillary.min.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/4.13/esri/css/main.css">
+    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="./css/slider.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <input class="trigger" type="checkbox" id="navButton">
+            <label for="navButton"><a href="#inicio"><img src="http://atlasnacionalderiesgos.gob.mx/Imagenes/Logos/chimali.png" alt="CNPC">CNPC</a></label>
+            <ul>
+                <li><a href="#inicio"><img src="http://atlasnacionalderiesgos.gob.mx/Imagenes/Logos/chimali.png" alt="CNPC">Coordinación Nacional de Protección Civil</a></li>
+                <li><a href="#rutas-evacuacion">Rutas de evacuación</a></li>
+                <!--<li><a href="#acciones">¿Qué se está haciendo?</a></li>-->
+                <li><a href="#planes">Planes Homologados</a></li>
+                <li><a href="#accionesEstados">Reporte de acciones</a></li>
+                <li><a href="#reporta">Reporta</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div id="messageContainer">
+        <div class="message">
+            <div class="messageInfo">
+                <h2 class="messageTitle">!Gracias!</h2>
+                <div class="messageText">Tu información se está revisando.</div>
+                <div class="buttonAccept">Aceptar</div>
+            </div>
+        </div>
+    </div>
+    <div class="main">
+        <section id="inicio" class="section">
+            <div class="container">
+                <div class="mainLogos">
+                    <div class="logo">
+                        <img src="http://atlasnacionalderiesgos.gob.mx/Imagenes/Logos/chimali.png" alt="CNPC">
+                        <div class="logoText">Sistema Nacional de Protección Civil</div>
+                    </div>
+                </div>
+                <div class="statesLogos">
+                    <img src="./images/logosEstados/logo_cdmx.svg" alt="CDMX">
+                    <img src="./images/logosEstados/logo_edomex.png" alt="Estado de México">
+                    <img src="./images/logosEstados/logo_morelos.png" alt="Morelos">
+                    <img src="./images/logosEstados/logo_puebla.png" alt="Puebla">
+                    <img src="./images/logosEstados/logo_tlaxcala.png" alt="Tlaxcala">
+                </div>
+            </div>
+        </section>
+        <section id="rutas-evacuacion" class="section fullsize">
+            <div class="container">
+                <div class="mapContainer">
+                    <div id="mapillaryTour"></div>
+                    <div id="mapillaryMap">
+                        <div class="slidecontainer" id="slidecontainer" disabled="disabled">
+                            <p style="margin: 0;">Seleccionar rutas por año</p>
+                            <div style="margin:auto;width: 50%;text-align: center;">
+                                <label id="slider-value">2020</label>
+                            </div>
+                            <input type="range" min="2019" max="2020" value="2020" id="slider" class="slider" disabled="disabled">
+                            <label id="slider-min" for="slider" style="float: left;">2019</label>
+                            <label id="slider-max" for="slider" style="float: right;">2020</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--<section class="section" id="acciones">
+            <h2>Conoce las acciones que se están realizando en cada estado</h2>
+            <div class="container">
+                <div class="tabContainer">
+                    <ul class="tabList">
+                        <li class="tabElement" data-idEstado="9">CDMX</li>
+                        <li class="tabElement" data-idEstado="15">México</li>
+                        <li class="tabElement" data-idEstado="17">Morelos</li>
+                        <li class="tabElement" data-idEstado="21">Puebla</li>
+                        <li class="tabElement" data-idEstado="29">Tlaxcala</li>
+                    </ul>
+                </div>
+                <div class="panelsContainer" id="panelsContainer">
+                </div>
+            </div>
+        </section>-->
+        <section class="section" id="planes">
+            <h2>Planes homologados Volcán Popocatépetl 2019</h2>
+            <div class="container cards">
+                <div class="card">
+                    <h3>Estado de México</h3>
+                    <div class="image"><a href="http://www.preparados.gob.mx/apps/rutasvolcan/planpopocatepetl/PlanEdoMex2019.pdf" target="_blank"><img src="http://preparados.gob.mx/rutasvolcan/planpopocatepetl/caratulaEdoMex.png" alt="Estado de México"></a></div>
+                </div>
+                <div class="card">
+                    <h3>Morelos</h3>
+                    <div class="image"><a href="http://www.preparados.gob.mx/apps/rutasvolcan/planpopocatepetl/PlanMorelos2019.pdf" target="_blank"><img src="http://preparados.gob.mx/rutasvolcan/planpopocatepetl/caratulaMorelos.png" alt="Morelos"></a></div>
+                </div>
+                <div class="card">
+                    <h3>Puebla</h3>
+                    <div class="image"><a href="http://www.preparados.gob.mx/apps/rutasvolcan/planpopocatepetl/PlanPuebla2019.pdf" target="_blank"><img src="http://preparados.gob.mx/rutasvolcan/planpopocatepetl/caratulaPuebla.png" alt="Puebla"></a></div>
+                </div>
+                <div class="card">
+                    <h3>Tlaxcala</h3>
+                    <div class="image"><a href="http://www.preparados.gob.mx/apps/rutasvolcan/planpopocatepetl/PlanTlaxcala2019.pdf" target="_blank"><img src="http://preparados.gob.mx/rutasvolcan/planpopocatepetl/caratulaTlaxcala.png" alt="Tlaxcala"></a></div>
+                </div>
+            </div>
+            <div class="container cards">
+                <div class="card">
+                    <h3>Plan General</h3>
+                    <div class="image"><a href="http://www.preparados.gob.mx/apps/rutasvolcan/planpopocatepetl/PLANGENERALPOPOCATEPETL2019.pdf" target="_blank"><img src="http://preparados.gob.mx/rutasvolcan/planpopocatepetl/caratulaGeneral.png" alt="General"></a></div>
+                </div>
+            </div>
+        </section>
+        <section class="section" id="accionesEstados">
+            <h2>Resumen de acciones</h2>
+            <div class="container cards">
+                <div class="card">
+                    <div>Acciones del Estado de México</div>
+                    <a href="http://www.atlasnacionalderiesgos.gob.mx/rutasvolcan/Documentos/AccionesEdoMex.pdf" target="_blank">Descarga aquí</a>
+                </div>
+                <div class="card">
+                    <div>Acciones del Morelos</div>
+                    <a href="http://www.atlasnacionalderiesgos.gob.mx/rutasvolcan/Documentos/AccionesMorelos.pdf" target="_blank">Descarga aquí</a>
+                </div>
+                <div class="card">
+                    <div>Acciones del Tlaxcala</div>
+                    <a href="http://www.atlasnacionalderiesgos.gob.mx/rutasvolcan/Documentos/AccionesTlaxcala.pdf" target="_blank">Descarga aquí</a>
+                </div>
+            </div>
+        </section>
+        <section id="reporta" class="section">
+            <div class="container">
+                <div class="tabContainer">
+                    <ul class="tabList">
+                        <li class="tabElement" data-tabId="0">Reporta</li>
+                        <li class="tabElement" data-tabId="1">Mapa Ciudadano</li>
+                    </ul>
+                </div>
+                <div class="panels">
+                    <div class="panel formContainer">
+                        <h2>Si encuentras algún problema en una ruta de evacuación o señalización dañada repórtanosla</h2>
+                        <div class="fieldsContainer" id="fieldsContainer">
+                            <div class="formGroup">
+                                <label for="reportImage"><strong>1. Selecciona la imagen (Máximo 5 MB)</strong></label>
+                                <input type="file" id="reportImage" formenctype="multipart/form-data" accept="image/*" capture="camera"> 
+                            </div>
+
+                            <div class="formGroup">
+                                <label for="reportDescription"><strong>2. Coloca una descripción</strong></label>
+                                <textarea id="reportDescription" cols="30" rows="5"></textarea>
+                            </div>
+
+                            <div class="location">
+                                <div class="formGroup">
+                                    <label for="">Ubicación<br/><strong>3. Da click sobre el mapa para ubicar la zona del reporte</strong></label>
+                                </div>
+                                
+                                <div class="locationContainer">
+                                    <div class="locationElement">
+                                        <div class="formGroup">
+                                            <div class="mapContainer">
+                                                <div id="map"></div>
+                                                <div class="logos">
+                                                    <img src="./images/SSyPC_CNPC_CENACOM_blanco.png" alt="CENACOM">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="locationElement">
+                                        <div class="formGroup">
+                                            <label for=""><strong>4. Verifica que la información es correcta</strong></label>
+                                        </div>
+
+                                        <div class="formGroup">
+                                            <label for="reportState">Entidad federativa</label>
+                                            <select class="stateList" id="reportState">
+                                                <option class="stateElement" value="0">Selecciona</option>
+                                                <option class="stateElement" value="9">CDMX</option>
+                                                <option class="stateElement" value="15">México</option>
+                                                <option class="stateElement" value="17">Morelos</option>
+                                                <option class="stateElement" value="21">Puebla</option>
+                                                <option class="stateElement" value="29">Tlaxcala</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="formGroup">
+                                            <label for="reportCounty">Municipio</label>
+                                            <input type="text" id="reportCounty">
+                                        </div>
+
+                                        <div class="formGroup">
+                                            <label for="reportNeighborhood">Colonia</label>
+                                            <input type="text" id="reportNeighborhood">
+                                        </div>
+
+                                        <div class="formGroup">
+                                            <label for="reportPostal">Código Postal</label>
+                                            <input type="text" id="reportPostal">
+                                        </div>
+
+                                        <div class="formGroup">
+                                            <label for="reportStreet">Calle y número</label>
+                                            <input type="text" id="reportStreet">
+                                        </div>
+
+                                        <div class="formGroup">
+                                            <label for="reportLatitude">Latitud</label>
+                                            <input type="text" id="reportLatitude" disabled>
+                                        </div>
+
+                                        <div class="formGroup">
+                                            <label for="reportLongitude">Longitud</label>
+                                            <input type="text" id="reportLongitude" disabled>
+                                        </div>
+
+                                        <div class="formGroup">
+                                            <button id="refreshLocation">Actualizar ubicación</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="formGroup">
+                                <label for="reportMail"><strong>5. Si quieres recibir actualizaciones de la información introduce tu correo (opcional)</strong></label>
+                                <input type="email" id="reportMail">
+                            </div>
+
+                            <div class="formGroup">
+                                <button id="submitForm">Aceptar</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="mapContainerCrowd">
+                            <div id="crowdMap"></div>
+                            <div class="logos">
+                                <img src="./images/SSyPC_CNPC_CENACOM_blanco.png" alt="CENACOM">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script id="acciones-template" type="text/x-handlebars-template">
+        {{#each acciones as |accion|}}
+            <div class="accion">
+                {{#ifCond accion.categoria "==" 1}}
+                    {{printHTML accion.url}}
+                {{/ifCond}}
+            </div>
+        {{/each}}
+    </script>
+
+    <script id="message-template" type="text/x-handlebars-template">
+        <div class="message">
+            <div class="messageInfo">
+                <h2 class="messageTitle">{{this.title}}</h2>
+                <div class="messageText">{{this.message}}</div>
+                <div class="buttonAccept">Aceptar</div>
+            </div>
+        </div>
+    </script>
+
+    <script id="mapAuxiliary-template" type="text/x-handlebars-template">
+        {{#ifCond this.type '==' 'video'}}
+            <iframe src="{{this.videoUrl}}" width="100%" height="100%"></iframe>
+        {{/ifCond}}
+    </script>
+
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    <script src="./js/handlebarsHelpers.js"></script>
+    <script src="./js/main.js"></script>
+    <script src="./js/crowdMap.js"></script>
+    <script src="./js/mapillary.js"></script>
+</body>
+</html>

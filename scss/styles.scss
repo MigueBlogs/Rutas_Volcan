@@ -1,0 +1,398 @@
+@import "normalize.css";
+@import "./modules/fonts";
+@import "./modules/colors";
+@import "./modules/nav";
+@import "./modules/tabs";
+
+body {
+    font-family: 'Montserrat', 'Arial';
+    overflow: auto;
+}
+
+iframe {
+    height: 100%;
+    width: 100%;
+}
+
+#inicio {
+    .container {
+        padding: 1em;
+
+        .mainLogos {
+            display: flex;
+            justify-content: center;
+
+            .logo {
+                text-align: center;
+                
+                img {
+                    height: 4em;
+                }
+
+                .logoText {
+                    font-weight: bold;
+                    text-align: center;
+
+                    @include breakpoint(tablet) { font-size: 2em; }
+                    @include breakpoint(laptop) { font-size: 2em; }
+                    @include breakpoint(desktop) { font-size: 2em; }
+                }
+            }
+        }
+    
+        .statesLogos {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 1em 0;
+    
+            img {
+                height: 1.5em;;
+                margin: 0.5em;
+            }
+        }
+    }
+}
+
+.main {
+    .section {
+        h2 { text-align: center; }
+
+        .container {
+            height: 100%;
+        }
+
+        &:first-child { margin-top: 52px; }
+        &.fullsize { height: calc(100vh - 52px); }
+    }
+}
+
+.mapContainer {
+    height: 500px;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+
+    #map {
+        height: 100%;
+        width: 100%;
+    }
+
+    .logos {
+        bottom: 15px;
+        left: 10px;
+        position: absolute;
+        text-align: center;
+
+        img {
+            height: 2em;
+            @include breakpoint(tablet) { height: 3em; }
+            @include breakpoint(laptop) { height: 3em; }
+            @include breakpoint(desktop) { height: 3em; }
+        }
+    }
+}
+
+.formContainer {
+    .fieldsContainer {
+        .formGroup {
+            margin-top: 1em;
+
+            label { display: block; }
+            input, textarea, select {
+                box-sizing: border-box;
+                display: block;
+                width: 100%;
+            }
+
+            button {
+                border: none;
+                border-radius: 5px;
+                color: white;
+                padding: 1em;
+                text-shadow: unset;
+
+                &#refreshLocation { background: $blue; }
+                &#submitForm {
+                    background: $verde;
+                    margin-bottom: 5em;
+                }
+            }
+        }
+    
+        @include breakpoint(tablet) {
+            width: 80%;
+            margin: 0 auto;
+    
+            .formGroup { width: 50%; }
+
+            .locationContainer {
+                display: flex;
+                justify-content: space-between;
+
+                .locationElement {
+                    width: 48.5%;
+
+                    .formGroup { 
+                        display: block;
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    
+        @include breakpoint(laptop) {
+            width: 80%;
+            margin: 0 auto;
+    
+            .formGroup { width: 50%; }
+
+            .locationContainer {
+                display: flex;
+                justify-content: space-between;
+
+                .locationElement {
+                    width: 48.5%;
+
+                    .formGroup { 
+                        display: block;
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    
+        @include breakpoint(desktop) {
+            width: 80%;
+            margin: 0 auto;
+    
+            .formGroup { width: 50%; }
+
+            .locationContainer {
+                display: flex;
+                justify-content: space-between;
+
+                .locationElement {
+                    width: 48.5%;
+
+                    .formGroup { 
+                        display: block;
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.panelsContainer {
+    @include breakpoint(tablet) {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+
+        .accion { width: 45%; }
+    }
+
+    @include breakpoint(laptop) {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+
+        .accion { width: 45%; }
+    }
+
+    @include breakpoint(desktop) {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+
+        .accion { width: 30%; }
+    }
+}
+
+#messageContainer {
+    align-items: center;
+    background: rgba(black, 0.8);
+    display: none;
+    height: 100vh;
+    justify-content: center;
+    position: fixed;
+    width: 100vw;
+    top: 0;
+    z-index: 2;
+
+    &.active { display: flex; }
+
+    .message {
+        align-items: center;
+        background: white;
+        display: flex;
+        justify-content: center;
+        width: 100vw;
+        height: 100vh;
+
+        .messageTitle, .buttonAccept { text-align: center; }
+        .buttonAccept {
+            background: $blue;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            padding: 1em;
+            margin: 1em 0;
+        }
+    }
+
+    @include breakpoint(tablet) {
+        .message {
+            border-radius: 10px;
+            height: auto;
+            width: 40%;
+        }
+    }
+
+    @include breakpoint(laptop) {
+        .message {
+            border-radius: 10px;
+            height: auto;
+            width: 40%;
+        }
+    }
+
+    @include breakpoint(desktop) {
+        .message {
+            border-radius: 10px;
+            height: auto;
+            width: 40%;
+        }
+    }
+}
+
+#reporta {
+    .panels {
+        .panel {
+            display: none;
+
+            &.active {
+                display: block;
+            }
+
+            .mapContainerCrowd {
+                height: calc(100vh - 130px);
+                margin: 1em auto;
+                overflow: hidden;
+                position: relative;
+                width: 100%;
+
+                #crowdMap {
+                    height: 100%;
+                    width: 100%;
+                }
+
+                .logos {
+                    bottom: 15px;
+                    left: 10px;
+                    position: absolute;
+                    text-align: center;
+
+                    img { 
+                        height: 2em;
+
+                        @include breakpoint(tablet) { height: 3em; }
+                        @include breakpoint(laptop) { height: 3em; }
+                        @include breakpoint(desktop) { height: 3em; }
+                    }
+
+                    
+                }
+            }
+        }
+    }
+}
+
+#rutas-evacuacion {
+    .container {
+        .mapContainer {
+            height: 100%;
+            display: flex;
+            flex-wrap: wrap;
+
+            #mapillaryTour {
+                width: 0%;
+
+                &.active, &.active + #mapillaryMap {
+                    width: 50%;
+                    height: 100%;
+                }
+            }
+
+            #mapillaryMap {
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+}
+
+.esri-popup {
+    .mapAux {
+        cursor: pointer;
+
+        &:hover {
+            color: $guinda;
+            text-decoration: underline;
+        }
+    }
+}
+
+#accionesEstados {
+    .cards {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        margin-bottom: 2em;
+
+        .card {
+            border: 2px solid $guinda;
+            border-radius: 5px;
+            padding: 1em;
+
+            @include breakpoint(tablet) { width: 40%; }
+            @include breakpoint(laptop) { width: 30%; }
+            @include breakpoint(desktop) { width: 30%; }
+        }
+    }
+}
+
+#planes {
+    .cards {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        margin-bottom: 2em;
+
+        .card {
+            h3 { text-align: center; }
+
+            border: 2px solid $guinda;
+            border-radius: 5px;
+            padding: 1em;
+            width: 80%;
+
+            .image {
+                height: 200px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                a, img {
+                    height: 200px;
+                }
+            }
+
+            @include breakpoint(tablet) { width: 30%; }
+            @include breakpoint(laptop) { width: 22%; }
+            @include breakpoint(desktop) { width: 22%; }
+        }
+    }
+}
