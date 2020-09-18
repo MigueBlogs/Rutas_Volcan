@@ -28,7 +28,7 @@
         if (move_uploaded_file( $_FILES['file']['tmp_name'], $target_path)) {
             $uploaded = array(
                 'name' => $newName,
-                'url' => 'http://www.preparados.gob.mx/uploads/'.$newName
+                'url' => 'http://www.preparados.cenapred.unam.mx/uploads/'.$newName
             );
         } else {
             $errors[] = 'No fue posible subir el archivo';
