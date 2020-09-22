@@ -51,8 +51,9 @@ $(function() {
             view = new MapView({
                 container: "mapillaryMap",
                 map: map,
-                center: [-102,19.0266],
-                zoom: 8
+                // center: [-102,19.0266],
+                center: [-98.634314,19.014356], 
+                zoom: 9
             });
     
             const basemapGallery = new Expand({

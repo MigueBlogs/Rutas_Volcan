@@ -28,6 +28,7 @@ $(function() {
             container: "map",
             map: map,
             center: [-98.6264,19.0266],
+            // center: [-98.7662,19.1793],
             zoom: 9
         });
 
