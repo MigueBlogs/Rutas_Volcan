@@ -29,6 +29,9 @@
         $sequenceId = $_GET['sequenceId'];
 
         getSecuencia($sequenceId);
+    } else if(isset($_GET['sequences'])) {
+        echo json_encode(getSecuencias());
+        die();
     }
 
     function getAcciones($state) {
@@ -108,6 +111,70 @@
         echo json_encode($ar);
     }
 
+    function getEstados() {
+        require_once("db_global.php");
+
+        $conn = dbConnect(user, pass, server);
+
+        $paramsArray = Array(
+        );
+
+        $queryStr = "SELECT ID_ESTADO, NOMBRE FROM ESTADO ORDER BY ID_ESTADO";
+
+        $query = oci_parse($conn, $queryStr);
+
+        foreach ($paramsArray as $key => $value) {
+            oci_bind_by_name($query, $key, $paramsArray[$key]);
+        }
+
+        oci_execute($query);
+        $ar = [];
+
+        while ( ($row = oci_fetch_assoc($query)) != false) {
+            $ar[] = $row;
+        }
+
+        dbClose($conn, $query);
+        return $ar;
+    }
+
+    function getSecuencias() {
+        require_once("db_global.php");
+
+        $conn = dbConnect(user, pass, server);
+
+        $paramsArray = Array(
+        );
+
+        $queryStr = "SELECT ID_SECUENCIA, RUTA, LUGAR_INICIO, LUGAR_FIN, DESTINO_FINAL, URL_FRONTAL, URL_360 FROM RUTAS
+        ORDER BY ID_SECUENCIA DESC";
+
+        $query = oci_parse($conn, $queryStr);
+
+        foreach ($paramsArray as $key => $value) {
+            oci_bind_by_name($query, $key, $paramsArray[$key]);
+        }
+
+        oci_execute($query);
+        $ar = [];
+        $result = Array();
+
+        while ( ($row = oci_fetch_assoc($query)) != false) {
+            $result["idSecuencia"] = $row["ID_SECUENCIA"];
+            $result["ruta"] = $row["RUTA"];
+            $result["lugarInicio"] = $row["LUGAR_INICIO"];
+            $result["lugarFin"] = $row["LUGAR_FIN"];
+            $result["destinoFinal"] = $row["DESTINO_FINAL"];
+            $result["urlFrontal"] = $row["URL_FRONTAL"];
+            $result["url360"] = $row["URL_360"];
+
+            $ar[] = $result;
+        }
+
+        dbClose($conn, $query);
+        return $ar;
+    }
+
     function addReport($idEstado, $municipio, $latitud, $longitud, $imageUrl, $descripcion, $optionals) {
         require_once("db_global.php");
 
@@ -159,6 +226,43 @@
         dbClose($conn, $query);
 
         echo json_encode(["message" => "Registro insertado"]);
+    }
+
+    function addRuta() {
+        require_once("db_global.php");
+
+        $conn = dbConnect(user, pass, server);
+
+        $paramsArray = Array(
+            ":id_seq" => $_POST["sequence"],
+            ":estado" => $_POST["estado"],
+            ":ruta" => $_POST["ruta"],
+            ":inicio" => $_POST["inicio"],
+            ":fin" => $_POST["fin"],
+            ":final" => $_POST["final"],
+            ":frontal" => $_POST["frontal"],
+            ":url_360" => $_POST["360"],
+        );
+
+        $queryStr = "INSERT INTO RUTAS (ID_SECUENCIA, ID_ESTADO, RUTA, LUGAR_INICIO, LUGAR_FIN, DESTINO_FINAL, URL_FRONTAL, URL_360)
+        VALUES (:id_seq, :estado, :ruta, :inicio, :fin, :final, :frontal, :url_360)";
+
+        
+        $query = oci_parse($conn, $queryStr);
+        
+        foreach ($paramsArray as $key => $value) {
+            oci_bind_by_name($query, $key, $paramsArray[$key]);
+        }
+
+        if(!oci_execute($query, OCI_NO_AUTO_COMMIT)) {
+            oci_rollback($conn);
+            trigger_error("No se pudo insertar RUTASVOLCAN.RUTAS", E_USER_ERROR);
+            return false;
+        } else {
+            oci_commit($conn);
+            dbClose($conn, $query);
+            return true;
+        }
     }
 
     function getReports(){

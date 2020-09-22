@@ -1,0 +1,63 @@
+@font-face {
+    font-family: Montserrat;
+    src: url("../fonts/Montserrat/Montserrat-Regular.ttf");
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: Montserrat-Bold;
+    src: url("../fonts/Montserrat/Montserrat-Bold.ttf");
+    font-weight: bold;
+    font-style: normal;
+}
+@font-face {
+    font-family: Montserrat;
+    src: url("../fonts/Montserrat/Montserrat-Italic.ttf");
+    font-weight: normal;
+    font-style: italic;
+}
+@font-face {
+    font-family:Montserrat;
+    src: url("../fonts/Montserrat/Montserrat-BoldItalic.ttf");
+    font-weight:bold;
+    font-style:italic;
+}
+* {
+    font-family: Montserrat;
+}
+h1, h2, h3, h4, h5, strong {
+    font-family: Montserrat-Bold,sans-serif;
+}
+body {
+    margin: 0;
+}
+.guinda {
+    background-color: #9D2449 !important;
+}
+.verde-oscuro {
+    background-color: #0C231E !important;
+}
+.dorado {
+    background-color: #B38E5D !important;
+}
+.guinda-text {
+    color: #9D2449 !important;
+}
+.verde-oscuro-text {
+    color: #0C231E !important;
+}
+.dorado-text {
+    color: #B38E5D !important;
+}
+.padded {
+    padding: 1em;
+}
+
+
+.tabs .indicator {
+    height: 5px !important;
+    background-color: #B38E5D !important;
+}
+.tabs .tab a:focus, .tabs .tab a:focus.active, .tabs .tab a:hover {
+    background-color: rgba(219, 166, 98, 0.41) !important;
+}
