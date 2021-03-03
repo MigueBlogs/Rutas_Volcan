@@ -41,7 +41,10 @@
 </head>
 <body>
     <div class="container">
-        <h3 class="center flow-text guinda white-text padded">Rutas de evacuación</h3>
+        <h3 class="center flow-text guinda white-text padded">
+            <a class="left white btn-floating" href="./"><i class="material-icons guinda-text">home</i></a>
+            Rutas de evacuación
+        </h3>
         <?php if (isset($result)) { ?>
         <div class="row" id="div-result">
             <div class="col s12">
@@ -113,10 +116,9 @@
         <div id="tablas">
             <h5 class="flow-text">Listado de rutas registradas por año</h5>
             <div class="col s12">
-                <ul class="tabs verde-oscuro">
+                <ul class="tabs verde-oscuro" id="ul-tablas">
                     <li class="tab"><a class="white-text" href="#tabla-na">Sin definir</a></li>
-                    <li class="tab"><a class="white-text" href="#tabla-2019">2019</a></li>
-                    <li class="tab"><a class="active white-text" href="#tabla-2020">2020</a></li>
+                    
                 </ul>
             </div>
             <div id="tabla-na" class="col s12">
@@ -125,9 +127,12 @@
                         <tr>
                             <th>ID MAPILLARY</th>
                             <th>RUTA</th>
+                            <th>ESTADO</th>
                             <th>LUGAR INICIO</th>
                             <th>LUGAR FIN</th>
                             <th>DESTINO FINAL</th>
+                            <th>ESTADO SECUNDARIO</th>
+                            <th>RUTA SECUNDARIA</th>
                             <th>URL FRONTAL</th>
                             <th>URL 360</th>
                         </tr>
@@ -137,42 +142,7 @@
                     </tbody>
                 </table>
             </div>
-            <div id="tabla-2019" class="col s12">
-                <table class="striped highlight responsive-table">
-                    <thead>
-                        <tr>
-                            <th>ID MAPILLARY</th>
-                            <th>RUTA</th>
-                            <th>LUGAR INICIO</th>
-                            <th>LUGAR FIN</th>
-                            <th>DESTINO FINAL</th>
-                            <th>URL FRONTAL</th>
-                            <th>URL 360</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-    
-                    </tbody>
-                </table>
-            </div>
-            <div id="tabla-2020" class="col s12">
-                <table class="striped highlight responsive-table">
-                    <thead>
-                        <tr>
-                            <th>ID MAPILLARY</th>
-                            <th>RUTA</th>
-                            <th>LUGAR INICIO</th>
-                            <th>LUGAR FIN</th>
-                            <th>DESTINO FINAL</th>
-                            <th>URL FRONTAL</th>
-                            <th>URL 360</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        
-                    </tbody>
-                </table>
-            </div>
+            
         </div>
         
     </div>

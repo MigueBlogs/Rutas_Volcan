@@ -47,53 +47,85 @@ function rellenaTabla() {
                     success: function(response) {
                         const fecha_creado = new Date(response["properties"]["captured_at"]);
                         let year = fecha_creado.getFullYear();
-                        switch (year) {
-                            case 2019:
-                                $('#tabla-2019 tbody').append('<tr>\
-                                <td>'+r["idSecuencia"]+'</td>\
-                                <td>'+r["ruta"]+'</td>\
-                                <td>'+r["lugarInicio"]+'</td>\
-                                <td>'+r["lugarFin"]+'</td>\
-                                <td>'+r["destinoFinal"]+'</td>\
-                                <td>'+r["urlFrontal"]+'</td>\
-                                <td>'+r["url360"]+'</td></tr>'
-                                );
-                                break;
-                            case 2020:
-                                $('#tabla-2020 tbody').append('<tr>\
-                                <td>'+r["idSecuencia"]+'</td>\
-                                <td>'+r["ruta"]+'</td>\
-                                <td>'+r["lugarInicio"]+'</td>\
-                                <td>'+r["lugarFin"]+'</td>\
-                                <td>'+r["destinoFinal"]+'</td>\
-                                <td>'+r["urlFrontal"]+'</td>\
-                                <td>'+r["url360"]+'</td></tr>'
-                                );
-                                break;
-                            default:
-                                $('#tabla-na tbody').append('<tr>\
-                                <td>'+r["idSecuencia"]+'</td>\
-                                <td>'+r["ruta"]+'</td>\
-                                <td>'+r["lugarInicio"]+'</td>\
-                                <td>'+r["lugarFin"]+'</td>\
-                                <td>'+r["destinoFinal"]+'</td>\
-                                <td>'+r["urlFrontal"]+'</td>\
-                                <td>'+r["url360"]+'</td></tr>'
-                                );
-                                break;
+                        let tmp = '<tr>\
+                        <td>'+r["idSecuencia"]+'</td>\
+                        <td>'+r["ruta"]+'</td>\
+                        <td>'+r["estado"]+'</td>\
+                        <td>'+r["lugarInicio"]+'</td>\
+                        <td>'+r["lugarFin"]+'</td>\
+                        <td>'+r["destinoFinal"]+'</td>';
+                        
+                        tmp += r["estadoSec"] ? '<td>' + r["estadoSec"] + '</td>' : '<td></td>';
+                        tmp += r["rutaSec"] ? '<td>' + r["rutaSec"] + '</td>' : '<td></td>';
+                        
+                        if (r["urlFrontal"]) {
+                            tmp += '<td class="center"><a href="'+r["urlFrontal"]+'" target="_blank"><i class="material-icons prefix guinda-text">play_circle_outline</i></a></td>';
+                        }
+                        else {
+                            tmp += '<td></td>'
+                        }
+                        if (r["url360"]) {
+                            tmp += '<td class="center"><a href="'+r["url360"]+'" target="_blank"><i class="material-icons prefix guinda-text">play_circle_outline</i></td>';
+                        }
+                        else {
+                            tmp += '<td></td>'
+                        }
+
+                        if ($('#tabla-'+year).length > 0) {
+                            $('#tabla-'+year+' tbody').append(tmp);
+                        }
+                        else {
+                            $('#tablas').append('\
+                            <div id="tabla-'+year+'" class="col s12">\
+                                <table class="striped highlight responsive-table">\
+                                    <thead>\
+                                        <tr>\
+                                            <th>ID MAPILLARY</th>\
+                                            <th>RUTA</th>\
+                                            <th>ESTADO</th>\
+                                            <th>LUGAR INICIO</th>\
+                                            <th>LUGAR FIN</th>\
+                                            <th>DESTINO FINAL</th>\
+                                            <th>ESTADO SECUNDARIO</th>\
+                                            <th>RUTA SECUNDARIA</th>\
+                                            <th>URL FRONTAL</th>\
+                                            <th>URL 360</th>\
+                                        </tr>\
+                                    </thead>\
+                                    <tbody>\
+                                    </tbody>\
+                                </table>\
+                            </div>');
+                            $('#ul-tablas').append('\
+                            <li class="tab"><a class="white-text" href="#tabla-'+year+'">'+year+'</a></li>\
+                            ');
+                            //$('#tabla-na tbody').append(tmp);
                         }
                         
                     },
                     error: function(error) {
-                        $('#tabla-na tbody').append('<tr>\
-                            <td>'+r["idSecuencia"]+'</td>\
-                            <td>'+r["ruta"]+'</td>\
-                            <td>'+r["lugarInicio"]+'</td>\
-                            <td>'+r["lugarFin"]+'</td>\
-                            <td>'+r["destinoFinal"]+'</td>\
-                            <td>'+r["urlFrontal"]+'</td>\
-                            <td>'+r["url360"]+'</td></tr>'
-                        );
+                        let tmp = '<tr>\
+                        <td>'+r["idSecuencia"]+'</td>\
+                        <td>'+r["ruta"]+'</td>\
+                        <td>'+r["estado"]+'</td>\
+                        <td>'+r["lugarInicio"]+'</td>\
+                        <td>'+r["lugarFin"]+'</td>\
+                        <td>'+r["destinoFinal"]+'</td>';
+                        tmp += r["estadoSec"] ? '<td>' + r["estadoSec"] + '</td>' : '<td></td>';
+                        tmp += r["rutaSec"] ? '<td>' + r["rutaSec"] + '</td>' : '<td></td>';
+                        if (r["urlFrontal"]) {
+                            tmp += '<td class="center"><a href="'+r["urlFrontal"]+'" target="_blank"><i class="material-icons prefix guinda-text">play_circle_outline</i></a></td>';
+                        }
+                        else {
+                            tmp += '<td class="center"></td>'
+                        }
+                        if (r["url360"]) {
+                            tmp += '<td class="center"><a href="'+r["url360"]+'" target="_blank"><i class="material-icons prefix guinda-text">play_circle_outline</i></td>';
+                        }
+                        else {
+                            tmp += '<td class="center"></td>'
+                        }
+                        $('#tabla-na tbody').append(tmp);
                     }
                 });
             });
@@ -115,6 +147,9 @@ $(document).ready(function(){
     });
 
     rellenaTabla();
+    setTimeout(function() {
+        $('.tabs').tabs();
+    }, 3000)
 
     $('#btn-add').on('click', function(){
         $('form').parent().show();
