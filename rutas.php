@@ -69,7 +69,7 @@
                 <div class="input-field col s12">
                     <input class="validate" type="number" name="ruta" id="ruta" required min=1>
                     <label for="ruta">Número de ruta</label>
-                    <span class="helper-text" data-error="Ingresa el número de la ruta" data-success="">Ingresa el número de la ruta</span>
+                    <span class="helper-text" data-error="Ingresa el número de la ruta" data-success="">Ingresa el número de la ruta (Número únicamente)</span>
                 </div>
                 <div class="input-field col s12">
                     <select class="validate" name="estado" id="estado" required>
@@ -106,6 +106,21 @@
                     <label for="360">URL del video 360</label>
                     <span class="helper-text" data-error="Ingresa una URL válida" data-success="">Ingresa la URL del video de la cámara 360</span>
                 </div>
+                <div class="input-field col s12">
+                    <select class="validate" name="estado-sec" id="estado_sec">
+                        <option selected value="">Selecciona el estado</option>
+                        <?php foreach (getEstados() as $key => $e) { ?>
+                            <option value="<?=$e["ID_ESTADO"]?>"><?=$e["NOMBRE"]?></option>
+                        <?php } ?>
+                    </select>
+                    <label for="estado_sec">Entidad Federativa Secundario</label>
+                    <span class="helper-text red-text" style="display:none;">Debes seleccionar la entidad federativa de la ruta secundaria</span>
+                </div>
+                <div class="input-field col s12">
+                    <input class="validate" type="number" name="ruta-sec" id="ruta_sec" min=1>
+                    <label for="ruta_sec">Número de ruta secundaria</label>
+                    <span class="helper-text" data-error="Ingresa el número de la ruta" data-success="">Ingresa el número de la ruta secundaria (Un solo número únicamente)</span>
+                </div>
                 <div class="col s12">
                     <button id="btn-form" class="btn dorado white-text" type="submit">Registrar ruta</button>
                     <button id="btn-back" class="btn guinda white-text" type="button">Cancelar</button>
@@ -116,7 +131,7 @@
         <div id="tablas">
             <h5 class="flow-text">Listado de rutas registradas por año</h5>
             <div class="col s12">
-                <ul class="tabs verde-oscuro" id="ul-tablas">
+                <ul class="tabs tabs-fixed-width verde-oscuro" id="ul-tablas">
                     <li class="tab"><a class="white-text" href="#tabla-na">Sin definir</a></li>
                     
                 </ul>
@@ -138,7 +153,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                        
+                        <?php 
+                        foreach ($rutas as $key => $value) { ?>
+                        <tr>
+                            <td><a href="<?=$value["idSecuencia"]?>" target="_blank" rel="noopener noreferrer"><?=$value["idSecuencia"]?></a></td>
+                            <td><?=$value["ruta"]?></td>
+                            <td><?=$value["estado"]?></td>
+                            <td><?=$value["lugarInicio"]?></td>
+                            <td><?=$value["lugarFin"]?></td>
+                            <td><?=$value["destinoFinal"]?></td>
+                            <td><?=$value["estadoSec"]?></td>
+                            <td><?=$value["rutaSec"]?></td>
+                            <td class="center"><?=$value["urlFrontal"] ? '<a href="$value["urlFrontal"]" target="_blank"><i class="material-icons prefix guinda-text">play_circle_outline</i></a>': '' ?></td>
+                            <td class="center"><?=$value["url360"] ? '<a href="$value["url360"]" target="_blank"><i class="material-icons prefix guinda-text">play_circle_outline</i></a>': '' ?></td>
+                        </tr>
+                        <?php } ?>
                     </tbody>
                 </table>
             </div>
