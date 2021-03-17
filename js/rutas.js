@@ -46,9 +46,14 @@ function rellenaTabla() {
                     dataType: "json",
                     success: function(response) {
                         const fecha_creado = new Date(response["properties"]["captured_at"]);
+                        // console.log(response["properties"]["username"]);
+                        // debugger
                         let year = fecha_creado.getFullYear();
+                        let user = response["properties"]["username"];
+                        if(user != "cenacom") user= '<p style="color: red;">'+response["properties"]["username"]+'</p>';
                         let tmp = '<tr>\
                         <td>'+r["idSecuencia"]+'</td>\
+                        <td>'+user+'</td>\
                         <td>'+r["ruta"]+'</td>\
                         <td>'+r["estado"]+'</td>\
                         <td>'+r["lugarInicio"]+'</td>\
@@ -81,6 +86,7 @@ function rellenaTabla() {
                                     <thead>\
                                         <tr>\
                                             <th>ID MAPILLARY</th>\
+                                            <th>USUARIO</th>\
                                             <th>RUTA</th>\
                                             <th>ESTADO</th>\
                                             <th>LUGAR INICIO</th>\
@@ -104,8 +110,10 @@ function rellenaTabla() {
                         
                     },
                     error: function(error) {
+                        console.log(error);
                         let tmp = '<tr>\
                         <td>'+r["idSecuencia"]+'</td>\
+                        <td> - </td>\
                         <td>'+r["ruta"]+'</td>\
                         <td>'+r["estado"]+'</td>\
                         <td>'+r["lugarInicio"]+'</td>\

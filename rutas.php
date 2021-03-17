@@ -126,6 +126,7 @@
                     <thead>
                         <tr>
                             <th>ID MAPILLARY</th>
+                            <th>USUARIO</th>
                             <th>RUTA</th>
                             <th>ESTADO</th>
                             <th>LUGAR INICIO</th>
