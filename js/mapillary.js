@@ -33,7 +33,8 @@ $(function() {
             "esri/widgets/Locate",
             "esri/layers/FeatureLayer",
             "esri/layers/GraphicsLayer",
-            "esri/widgets/Slider"
+            "esri/widgets/Slider",
+            "esri/widgets/Fullscreen"
         ], function(
             Map,
             MapView,
@@ -44,7 +45,8 @@ $(function() {
             Locate,
             FeatureLayer,
             GraphicsLayer,
-            Slider
+            Slider,
+            Fullscreen
         ) {
             map = new Map({ basemap: "hybrid" });
     
@@ -67,6 +69,7 @@ $(function() {
             const homeWidget = new Home({ view: view });
             const locateWidget = new Locate({ view: view });
             const searchWidget = new Search({ view: view });
+            const FullScreenWidget = new Fullscreen({ view: view });
             // const slider = new Slider({
             //     container: "slider",
             //     min: 2019,
@@ -84,6 +87,7 @@ $(function() {
             view.ui.add(locateWidget, "top-left");
     
             view.ui.add(searchWidget, "top-right");
+            view.ui.add(FullScreenWidget, "top-right");
             // view.ui.add(slider, "bottom-right")
     
             // slider.on("thumb-drag", sliderChanged);
