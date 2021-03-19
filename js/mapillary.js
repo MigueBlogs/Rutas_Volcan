@@ -414,10 +414,16 @@ $(function() {
                     }
                     
                     view.popup.open(popupContent);
+                    view.popup.collapsed = false; // importante para que funcione en mobil
     
                     window.setTimeout(function(){
                         $(".esri-popup .mapAux").on("click", function() {
                             $("#mapillaryTour").html("");
+                            $("#mapillaryTour").append('<span id="closeMapillaryTour" class="close dot"></span>');
+                            $('#closeMapillaryTour').click(function(){
+                                $("#mapillaryTour").removeClass("active");
+                                mly.off(Mapillary.Viewer.nodechanged);
+                            });
                             $("#mapillaryTour").addClass("active");
     
                             const type = $(this).attr("data-type");
