@@ -397,6 +397,10 @@ iframe {
     }
 }
 
+@media(max-width: 500px){
+    #rutas-evacuacion .container .mapContainer #mapillaryTour.active,#rutas-evacuacion .container .mapContainer #mapillaryTour.active+#mapillaryMap
+    {width:100%;}
+}
 
 .dot {
     position: absolute;
