@@ -61,3 +61,11 @@ body {
 .tabs .tab a:focus, .tabs .tab a:focus.active, .tabs .tab a:hover {
     background-color: rgba(219, 166, 98, 0.41) !important;
 }
+
+.breakword{
+    word-break: break-all;
+}
+
+.row{
+    height: 2em;
+}

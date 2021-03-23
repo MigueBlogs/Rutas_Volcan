@@ -57,6 +57,7 @@
         <div class="row">
             Agregar ruta
             <button id="btn-add" class="btn-floating tooltipped guinda white-text" data-position="top" data-tooltip="Agregar ruta"><i class="material-icons prefix">add</i></button>
+            <img src="./images/main_logo.jpg" style="height:150%; float: right" alt="DAE">
         </div>
         <div class="row" style="display:none">
             <h5 class="flow-text">Añadir ruta</h5>
@@ -136,7 +137,8 @@
                     
                 </ul>
             </div>
-            <div id="tabla-na" class="col s12">
+            <img id="loading" src="./images/loading2.gif" style="width: 100%;">
+            <div id="tabla-na" class="col s12" style="display:none">
                 <table class="striped highlight responsive-table">
                     <thead>
                         <tr>
@@ -153,11 +155,12 @@
                             <th>URL 360</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="hideOnLoad" style="display:none;">
                         <?php 
                         foreach ($rutas as $key => $value) { ?>
                         <tr>
-                            <td><a href="<?=$value["idSecuencia"]?>" target="_blank" rel="noopener noreferrer"><?=$value["idSecuencia"]?></a></td>
+                            <td class="breakword"><a href="<?=$value["idSecuencia"]?>" target="_blank" rel="noopener noreferrer"><?=$value["idSecuencia"]?></a></td>
+                            <td>-</td>
                             <td><?=$value["ruta"]?></td>
                             <td><?=$value["estado"]?></td>
                             <td><?=$value["lugarInicio"]?></td>

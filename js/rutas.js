@@ -33,10 +33,19 @@ function validaForm() {
 function rellenaTabla() {
     const ids = $('#tabla-na tbody tr td:nth-child(1)');
     let semaphore = 0;
+    var rutas = [];
+    var desfase = 0;
+
+    var confirmed_count = 0;
+    var error_count = 0;
+
+
     $.each(ids, function(index, r){
+        // Solo para que no carque todas (DEVELOP mode)
+        // if(index>50) return;
         semaphore++;
         id_seq = $(r).find('a').text();
-        $.ajax({
+        var ruta = $.ajax({
             url: mapillaryBase + endpoint + id_seq,
             type: "GET",
             data: {client_id: client_id },
@@ -44,14 +53,18 @@ function rellenaTabla() {
             success: function(response) {
                 const fecha_creado = new Date(response["properties"]["captured_at"]);
                 let year = fecha_creado.getFullYear();
-    
+                //Agrega usuario que cargó la ruta de Mapillary, solo para verificar que sea de "CENACOM"
+                let user = response["properties"]["username"];
+                if(user != "cenacom") user= '<p style="color: red;">'+response["properties"]["username"]+'</p>';
+                $(r).next().html(user);
+                
                 tr = $(r).parent();
                 if ($('#tabla-'+year).length > 0) {
                     $('#tabla-'+year+' tbody').append(tr.clone());
                 }
                 else {
                     $('#tablas').append('\
-                    <div id="tabla-'+year+'" class="col s12">\
+                    <div id="tabla-'+year+'" style="display:none" class="col s12">\
                         <table class="striped highlight responsive-table">\
                             <thead>\
                                 <tr>\
@@ -82,112 +95,27 @@ function rellenaTabla() {
                 if (semaphore == 0){
                     $('.tabs').tabs();
                 }
-                // $.ajax({
-                //     url: mapillaryBase + endpoint + r["idSecuencia"],
-                //     type: "GET",
-                //     data: {client_id: client_id },
-                //     dataType: "json",
-                //     success: function(response) {
-                //         const fecha_creado = new Date(response["properties"]["captured_at"]);
-                //         // console.log(response["properties"]["username"]);
-                //         // debugger
-                //         let year = fecha_creado.getFullYear();
-                //         let user = response["properties"]["username"];
-                //         if(user != "cenacom") user= '<p style="color: red;">'+response["properties"]["username"]+'</p>';
-                //         let tmp = '<tr>\
-                //         <td>'+r["idSecuencia"]+'</td>\
-                //         <td>'+user+'</td>\
-                //         <td>'+r["ruta"]+'</td>\
-                //         <td>'+r["estado"]+'</td>\
-                //         <td>'+r["lugarInicio"]+'</td>\
-                //         <td>'+r["lugarFin"]+'</td>\
-                //         <td>'+r["destinoFinal"]+'</td>';
-                        
-                //         tmp += r["estadoSec"] ? '<td>' + r["estadoSec"] + '</td>' : '<td></td>';
-                //         tmp += r["rutaSec"] ? '<td>' + r["rutaSec"] + '</td>' : '<td></td>';
-                        
-                //         if (r["urlFrontal"]) {
-                //             tmp += '<td class="center"><a href="'+r["urlFrontal"]+'" target="_blank"><i class="material-icons prefix guinda-text">play_circle_outline</i></a></td>';
-                //         }
-                //         else {
-                //             tmp += '<td></td>'
-                //         }
-                //         if (r["url360"]) {
-                //             tmp += '<td class="center"><a href="'+r["url360"]+'" target="_blank"><i class="material-icons prefix guinda-text">play_circle_outline</i></td>';
-                //         }
-                //         else {
-                //             tmp += '<td></td>'
-                //         }
-
-                //         if ($('#tabla-'+year).length > 0) {
-                //             $('#tabla-'+year+' tbody').append(tmp);
-                //         }
-                //         else {
-                //             $('#tablas').append('\
-                //             <div id="tabla-'+year+'" class="col s12">\
-                //                 <table class="striped highlight responsive-table">\
-                //                     <thead>\
-                //                         <tr>\
-                //                             <th>ID MAPILLARY</th>\
-                //                             <th>USUARIO</th>\
-                //                             <th>RUTA</th>\
-                //                             <th>ESTADO</th>\
-                //                             <th>LUGAR INICIO</th>\
-                //                             <th>LUGAR FIN</th>\
-                //                             <th>DESTINO FINAL</th>\
-                //                             <th>ESTADO SECUNDARIO</th>\
-                //                             <th>RUTA SECUNDARIA</th>\
-                //                             <th>URL FRONTAL</th>\
-                //                             <th>URL 360</th>\
-                //                         </tr>\
-                //                     </thead>\
-                //                     <tbody>\
-                //                     </tbody>\
-                //                 </table>\
-                //             </div>');
-                //             $('#ul-tablas').append('\
-                //             <li class="tab"><a class="white-text" href="#tabla-'+year+'">'+year+'</a></li>\
-                //             ');
-                //             //$('#tabla-na tbody').append(tmp);
-                //         }
-                        
-                //     },
-                //     error: function(error) {
-                //         semaphore--;
-                //         if (semaphore == 0){
-                //             $('.tabs').tabs();
-                //         }
-                //         console.log(error);
-                //         let tmp = '<tr>\
-                //         <td>'+r["idSecuencia"]+'</td>\
-                //         <td> - </td>\
-                //         <td>'+r["ruta"]+'</td>\
-                //         <td>'+r["estado"]+'</td>\
-                //         <td>'+r["lugarInicio"]+'</td>\
-                //         <td>'+r["lugarFin"]+'</td>\
-                //         <td>'+r["destinoFinal"]+'</td>';
-                //         tmp += r["estadoSec"] ? '<td>' + r["estadoSec"] + '</td>' : '<td></td>';
-                //         tmp += r["rutaSec"] ? '<td>' + r["rutaSec"] + '</td>' : '<td></td>';
-                //         if (r["urlFrontal"]) {
-                //             tmp += '<td class="center"><a href="'+r["urlFrontal"]+'" target="_blank"><i class="material-icons prefix guinda-text">play_circle_outline</i></a></td>';
-                //         }
-                //         else {
-                //             tmp += '<td class="center"></td>'
-                //         }
-                //         if (r["url360"]) {
-                //             tmp += '<td class="center"><a href="'+r["url360"]+'" target="_blank"><i class="material-icons prefix guinda-text">play_circle_outline</i></td>';
-                //         }
-                //         else {
-                //             tmp += '<td class="center"></td>'
-                //         }
-                //         $('#tabla-na tbody').append(tmp);
-                //     }
-                // });
-            // });
-        },
+            },
+            error: function(error) {
+                semaphore--;
+                if (semaphore == 0){
+                    $('.tabs').tabs();
+                }
+            }
+        })
+        .then(function() { confirmed_count += 1; })
+        .catch(function() {
+            error_count += 1;
+            // return Promise.reject(); // Return a rejected promise to avoid resolving the parent promise
         });
+        rutas.push(ruta);  
+    });
 
-    })        
+    Promise.all(rutas)
+    .then(function() { 
+        $("#loading").hide();
+        $(".hideOnLoad").show();})
+    .catch(function() { console.log(`Successful uploads: ${confirmed_count}. Failed uploads: ${error_count}`);   });
 }
 
 $(document).ready(function(){
@@ -198,7 +126,8 @@ $(document).ready(function(){
     $('form').on('submit', function(e){
         return validaForm();
     });
-
+    // Define el año en el que fue tomada la ruta
+    
     rellenaTabla();
 
     $('#btn-add').on('click', function(){
