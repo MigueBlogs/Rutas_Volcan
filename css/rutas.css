@@ -69,3 +69,22 @@ body {
 .row{
     height: 2em;
 }
+
+.colForm{
+    margin-bottom: 1em;
+}
+
+#mapillaryMap{
+    height: 100vh;
+}
+
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .fixed-action-btn {
+    position: relative !important;
+    right: unset;
+    bottom: unset;
+  }

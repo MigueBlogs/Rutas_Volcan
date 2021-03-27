@@ -21,8 +21,9 @@ $(function() {
             this.disabled = true;
             loadSequences(map, view);
         }
-    })
-    function loadMap() {
+    });
+
+    function loadMap(centro) {
         require([
             "esri/Map",
             "esri/views/MapView",
@@ -54,8 +55,8 @@ $(function() {
                 container: "mapillaryMap",
                 map: map,
                 // center: [-102,19.0266],
-                center: [-98.634314,19.014356], 
-                zoom: 9
+                center: centro, 
+                zoom: 10
             });
     
             const basemapGallery = new Expand({
@@ -282,7 +283,7 @@ $(function() {
             map.layers.add(mapillaryRouteLayer);
             map.layers.add(mapillaryRoutePointsLayer);
             map.layers.add(mapillaryRoutePointActiveLayer);
-            map.layers.add(refugiosLayer);
+            // map.layers.add(refugiosLayer);
     
             loadSequences(map, view);
     
@@ -297,10 +298,10 @@ $(function() {
     
                     var sequenceId = graphic["attributes"]["key"];
                     view.goTo(graphic, { duration: 1500 });
-                    console.log("Obteniendo Info");
-                    console.log(graphic["attributes"]);
-                    console.log(sequenceId);
-                    // escribeDatos(sequenceId);
+                    // console.log("Obteniendo Info");
+                    // console.log(graphic["attributes"]);
+                    // console.log(sequenceId);
+                    escribeDatos(sequenceId);
                     
                     getSequenceInfo(map, view, event.mapPoint, sequenceId);
                 });
@@ -502,7 +503,7 @@ $(function() {
         });
     }
     
-    function loadSequences(map, mapView) {
+    function loadSequences2(map, mapView) {
         require([
             "esri/Graphic",
             "esri/layers/FeatureLayer",
@@ -549,6 +550,7 @@ $(function() {
                         };
     
                         var polylineAtt = properties;
+
                         graphics.push(new Graphic({
                             geometry: polyline,
                             symbol: polylineSymbol,
@@ -657,6 +659,73 @@ $(function() {
             });
         });
     }
+
+    function loadSequences(map, mapView, caja, ) {
+        require([
+            "esri/Graphic"
+        ], function(
+            Graphic
+        ) {
+            const endpoint = "/sequences";
+            const parameters = {
+                per_page: 1000,
+                usernames: "cenacom",
+                client_id: "b3d6QUR0Q0FqWXVBa3dCZF8taW5ldzo5MDI3OWVkMmQyZDhjMmMx",
+                // bbox: "-93.468933,17.119793,-92.910004,17.636824"
+            };
+
+            $.ajax({
+                url: mapillaryBase + endpoint,
+                type: "GET",
+                data: parameters,
+                dataType: "json",
+                success: function(data) {
+                    var graphics = [];
+
+                    data["features"].forEach(function(feature) {
+                        const path = feature["geometry"]["coordinates"];
+                        const properties = feature["properties"];
+                        const fecha_creado = new Date(properties["captured_at"]);
+                        // if (fecha_creado.getFullYear() != selected_year){
+                        //     return;
+                        // }
+    
+                        const polyline = {
+                            type: "polyline",
+                            paths: path
+                        };
+                          
+                        var polylineSymbol = {
+                            type: "simple-line",
+                            color: [255, 0, 0],
+                            width: 16
+                        };
+                          
+                          
+                        var polylineAtt = properties;  
+                        graphics.push(new Graphic({
+                            geometry: polyline,
+                            symbol: polylineSymbol,
+                            attributes: polylineAtt
+                        }));
+                    });
+
+                    var layer = map.findLayerById("mapillarySequences");
+                    layer.source.removeAll();
+                    layer.applyEdits({
+                        addFeatures: graphics
+                    }).then(function(result) {
+
+                    }, function(err) { console.log(err) });
+
+                    //console.log(layer);
+                },
+                error: function(error) {
+
+                }
+            });
+        });
+    }
     
     function getMapillarySequenceImage(domId, clientId, sequenceId) {
         require([
@@ -684,5 +753,9 @@ $(function() {
             });
         });
     }
-    loadMap();
+    //loadMap();
+
+    $('#btn-add').on('click', function(){
+        loadMap([-93.189812,17.377836]);
+    });
 });

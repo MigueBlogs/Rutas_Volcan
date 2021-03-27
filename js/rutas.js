@@ -1,6 +1,6 @@
 const endpoint = "/sequences/";
 const client_id = "b3d6QUR0Q0FqWXVBa3dCZF8taW5ldzo5MDI3OWVkMmQyZDhjMmMx";
-const mapillaryBase = "https://a.mapillary.com/v3";
+// const mapillaryBase = "https://a.mapillary.com/v3";
 
 function validaForm() {
     if ($('#sequence').val().trim() == "" || $('#sequence').val().length != 22){
@@ -42,7 +42,7 @@ function rellenaTabla() {
 
     $.each(ids, function(index, r){
         // Solo para que no carque todas (DEVELOP mode)
-        // if(index>50) return;
+        if(index>50) return;
         semaphore++;
         id_seq = $(r).find('a').text();
         var ruta = $.ajax({
@@ -118,6 +118,13 @@ function rellenaTabla() {
     .catch(function() { console.log(`Successful uploads: ${confirmed_count}. Failed uploads: ${error_count}`);   });
 }
 
+function escribeDatos(datos){
+    // console.log(datos);
+    $("#sequence").val(datos);
+    $("#sequence").addClass("valid");
+    $("#sequence").next().addClass("active");
+}
+
 $(document).ready(function(){
     M.AutoInit();
 
@@ -128,19 +135,31 @@ $(document).ready(function(){
     });
     // Define el año en el que fue tomada la ruta
     
-    rellenaTabla();
+    //rellenaTabla();
+    
 
     $('#btn-add').on('click', function(){
-        $('form').parent().show();
+        $('.divider').hide();
+        $('form').parent().parent().show();
         $(this).parent().hide();
         $('#tablas').hide('fast');
     });
     $('#btn-back').on('click', function(){
-        $('form').parent().hide();
+        $('.divider').show();
+        $('form').parent().parent().hide();
         $('#btn-add').parent().show();
         $('#tablas').show('fast');
     });
     $('#btn-close').on('click', function(){
         $('#div-result').hide('fast');
     });
+
+        //button menu volcano add map
+    $('.fixed-action-btn').floatingActionButton({
+        direction: 'right',
+        hoverEnabled: false
+    });
 });
+
+
+     
