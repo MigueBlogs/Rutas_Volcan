@@ -60,28 +60,26 @@
             </div>
         </div>
         <?php } ?>
-        <div class="row">
+        <div class="row flex ">
             <div class="col s6">
-                Agregar ruta
-                <div class="fixed-action-btn">
-                    <a class="btn-floating btn-large red">
-                        <i class="large material-icons">mode_edit</i>
+                <div class="fixed-action-btn navSup">
+                    <a class="btn-floating btn-large red tooltipped" data-position="bottom" data-tooltip="Agregar Ruta">
+                        <i class="large material-icons">add</i>
                     </a>
                     <ul>
-                        <li><a class="btn-floating red"><i class="material-icons">insert_chart</i></a></li>
-                        <li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>
-                        <li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
-                        <li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>
+                        <li><a class="btn-add btn-floating yellow darken-1 tooltipped" data-position="bottom" center=[-98.631821,19.014735] data-tooltip="Volcán Popocatépetl"><i class="material-icons">filter_hdr</i></a></li>
+                        <li><a class="btn-add btn-floating green tooltipped" data-position="bottom" center=[-103.608971,19.519993] data-tooltip="Volcán de Fuego"><i class="material-icons">whatshot</i></a></li>
+                        <li><a class="btn-add btn-floating blue tooltipped" data-position="bottom" center=[-93.189812,17.377836] data-tooltip="Volcán Chiapas"><i class="material-icons">photo_size_select_actual</i></a></li>
                     </ul>
                 </div>
-                <button id="btn-add" class="btn-floating tooltipped guinda white-text" data-position="top" data-tooltip="Agregar ruta"><i class="material-icons prefix">add</i></button>
+                <!-- <button id="btn-add" class="btn-floating tooltipped guinda white-text" data-position="top" data-tooltip="Agregar ruta"><i class="material-icons prefix">add</i></button> -->
             </div>
-        <div class="col s6">
-            <img src="./images/main_logo.jpg" style="height:150%; float: right" alt="DAE">
+            <div class="col s6">
+                <img src="./images/main_logo.jpg" style="height:10%; float: right" alt="DAE">
+            </div>
         </div>
-        </div>
-        <!-- <div class="row flex" style="display:none"> -->
-        <div class="row flex" style="">
+        <div class="row flex" style="display:none">
+        <!-- <div class="row flex" style=""> -->
             <div class="col s6 colForm">
                 <h5 class="flow-text">Añadir ruta</h5>
                 <form action="rutas.php" method="post">
@@ -168,12 +166,11 @@
             
         </div>
         <div class="divider"></div>
-        <div id="tablas" style="display:none">
+        <div id="tablas" style="">
             <h5 class="flow-text">Listado de rutas registradas por año</h5>
             <div class="col s12">
                 <ul class="tabs tabs-fixed-width verde-oscuro" id="ul-tablas">
                     <li class="tab"><a class="white-text" href="#tabla-na">Sin definir</a></li>
-                    
                 </ul>
             </div>
             <img id="loading" src="./images/loading2.gif" style="width: 100%;">

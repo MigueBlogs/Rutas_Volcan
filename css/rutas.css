@@ -88,3 +88,11 @@ body {
     right: unset;
     bottom: unset;
   }
+
+.navSup{
+    bottom: 0px !important;
+}
+
+.row{
+    margin-bottom: 40px !important;
+}

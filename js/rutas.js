@@ -42,7 +42,7 @@ function rellenaTabla() {
 
     $.each(ids, function(index, r){
         // Solo para que no carque todas (DEVELOP mode)
-        if(index>50) return;
+        // if(index>50) return;
         semaphore++;
         id_seq = $(r).find('a').text();
         var ruta = $.ajax({
@@ -135,13 +135,13 @@ $(document).ready(function(){
     });
     // Define el año en el que fue tomada la ruta
     
-    //rellenaTabla();
+    rellenaTabla();
     
 
-    $('#btn-add').on('click', function(){
+    $('.btn-add').on('click', function(){
         $('.divider').hide();
         $('form').parent().parent().show();
-        $(this).parent().hide();
+        // $(this).parent().hide();
         $('#tablas').hide('fast');
     });
     $('#btn-back').on('click', function(){
@@ -159,6 +159,7 @@ $(document).ready(function(){
         direction: 'right',
         hoverEnabled: false
     });
+    $('.tooltipped').tooltip();
 });
 
 
