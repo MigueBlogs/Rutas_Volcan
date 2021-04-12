@@ -81,7 +81,7 @@
         </div>
         </div>
         <!-- <div class="row flex" style="display:none"> -->
-        <div class="row flex" style="">
+        <div class="row flex" >
             <div class="col s6 colForm">
                 <h5 class="flow-text">Añadir ruta</h5>
                 <form action="rutas.php" method="post">

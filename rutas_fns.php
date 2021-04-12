@@ -1,5 +1,6 @@
 <?php
     require_once("db_fns.php");
+    require_once("db_global.php");
 
     if(isset($_GET['acciones']) && isset($_GET['state'])) {
         $state = (int)$_GET['state'];
@@ -237,8 +238,6 @@
     }
 
     function addRuta() {
-        require_once("db_global.php");
-
         $conn = dbConnect(user, pass, server);
 
         $paramsArray = Array(
