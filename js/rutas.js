@@ -31,6 +31,74 @@ function validaForm() {
 }
 
 function rellenaTabla() {
+    $.ajax({
+        url: "./rutas_fns.php",
+        method: "GET",
+        data: {sequences: true},
+        dataType: "json",
+        success: function(data) {
+            data.forEach((r) => {
+                
+                $.ajax({
+                    url: mapillaryBase + endpoint + r["idSecuencia"],
+                    type: "GET",
+                    data: {client_id: client_id },
+                    dataType: "json",
+                    success: function(response) {
+                        const fecha_creado = new Date(response["properties"]["captured_at"]);
+                        let year = fecha_creado.getFullYear();
+                        switch (year) {
+                            case 2019:
+                                $('#tabla-2019 tbody').append('<tr>\
+                                <td>'+r["idSecuencia"]+'</td>\
+                                <td>'+r["ruta"]+'</td>\
+                                <td>'+r["lugarInicio"]+'</td>\
+                                <td>'+r["lugarFin"]+'</td>\
+                                <td>'+r["destinoFinal"]+'</td>\
+                                <td class="center"><a href="'+r["urlFrontal"]+'" target="_blank"><i class="material-icons prefix guinda-text">play_circle_filled</i></a></td>\
+                                <td class="center"><a href="'+r["url360"]+'" target="_blank"><i class="material-icons prefix guinda-text">play_circle_filled</i></td>'
+                                );
+                                break;
+                            case 2020:
+                                $('#tabla-2020 tbody').append('<tr>\
+                                <td>'+r["idSecuencia"]+'</td>\
+                                <td>'+r["ruta"]+'</td>\
+                                <td>'+r["lugarInicio"]+'</td>\
+                                <td>'+r["lugarFin"]+'</td>\
+                                <td>'+r["destinoFinal"]+'</td>\
+                                <td class="center"><a href="'+r["urlFrontal"]+'" target="_blank"><i class="material-icons prefix guinda-text">play_circle_filled</i></a></td>\
+                                <td class="center"><a href="'+r["url360"]+'" target="_blank"><i class="material-icons prefix guinda-text">play_circle_filled</i></td>'
+                                );
+                                break;
+                            default:
+                                $('#tabla-na tbody').append('<tr>\
+                                <td>'+r["idSecuencia"]+'</td>\
+                                <td>'+r["ruta"]+'</td>\
+                                <td>'+r["lugarInicio"]+'</td>\
+                                <td>'+r["lugarFin"]+'</td>\
+                                <td>'+r["destinoFinal"]+'</td>\
+                                <td class="center"><a href="'+r["urlFrontal"]+'" target="_blank"><i class="material-icons prefix guinda-text">play_circle_filled</i></a></td>\
+                                <td class="center"><a href="'+r["url360"]+'" target="_blank"><i class="material-icons prefix guinda-text">play_circle_filled</i></td>'
+                                );
+                                break;
+                        }
+                        
+                    },
+                    error: function(error) {
+                        $('#tabla-na tbody').append('<tr>\
+                            <td>'+r["idSecuencia"]+'</td>\
+                            <td>'+r["ruta"]+'</td>\
+                            <td>'+r["lugarInicio"]+'</td>\
+                            <td>'+r["lugarFin"]+'</td>\
+                            <td>'+r["destinoFinal"]+'</td>\
+                            <td class="center"><a href="'+r["urlFrontal"]+'" target="_blank"><i class="material-icons prefix guinda-text">play_circle_filled</i></a></td>\
+                            <td class="center"><a href="'+r["url360"]+'" target="_blank"><i class="material-icons prefix guinda-text">play_circle_filled</i></td>'
+                        );
+                    }
+                });
+            })
+        }
+    })
     const ids = $('#tabla-na tbody tr td:nth-child(1)');
     let semaphore = 0;
     var rutas = [];
