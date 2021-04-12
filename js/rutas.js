@@ -55,8 +55,8 @@ function rellenaTabla() {
                                 <td>'+r["lugarInicio"]+'</td>\
                                 <td>'+r["lugarFin"]+'</td>\
                                 <td>'+r["destinoFinal"]+'</td>\
-                                <td>'+r["urlFrontal"]+'</td>\
-                                <td>'+r["url360"]+'</td></tr>'
+                                <td class="center"><a href="'+r["urlFrontal"]+'" target="_blank"><i class="material-icons prefix guinda-text">play_circle_filled</i></a></td>\
+                                <td class="center"><a href="'+r["url360"]+'" target="_blank"><i class="material-icons prefix guinda-text">play_circle_filled</i></td>'
                                 );
                                 break;
                             case 2020:
@@ -66,8 +66,8 @@ function rellenaTabla() {
                                 <td>'+r["lugarInicio"]+'</td>\
                                 <td>'+r["lugarFin"]+'</td>\
                                 <td>'+r["destinoFinal"]+'</td>\
-                                <td>'+r["urlFrontal"]+'</td>\
-                                <td>'+r["url360"]+'</td></tr>'
+                                <td class="center"><a href="'+r["urlFrontal"]+'" target="_blank"><i class="material-icons prefix guinda-text">play_circle_filled</i></a></td>\
+                                <td class="center"><a href="'+r["url360"]+'" target="_blank"><i class="material-icons prefix guinda-text">play_circle_filled</i></td>'
                                 );
                                 break;
                             default:
@@ -77,8 +77,8 @@ function rellenaTabla() {
                                 <td>'+r["lugarInicio"]+'</td>\
                                 <td>'+r["lugarFin"]+'</td>\
                                 <td>'+r["destinoFinal"]+'</td>\
-                                <td>'+r["urlFrontal"]+'</td>\
-                                <td>'+r["url360"]+'</td></tr>'
+                                <td class="center"><a href="'+r["urlFrontal"]+'" target="_blank"><i class="material-icons prefix guinda-text">play_circle_filled</i></a></td>\
+                                <td class="center"><a href="'+r["url360"]+'" target="_blank"><i class="material-icons prefix guinda-text">play_circle_filled</i></td>'
                                 );
                                 break;
                         }
@@ -91,8 +91,8 @@ function rellenaTabla() {
                             <td>'+r["lugarInicio"]+'</td>\
                             <td>'+r["lugarFin"]+'</td>\
                             <td>'+r["destinoFinal"]+'</td>\
-                            <td>'+r["urlFrontal"]+'</td>\
-                            <td>'+r["url360"]+'</td></tr>'
+                            <td class="center"><a href="'+r["urlFrontal"]+'" target="_blank"><i class="material-icons prefix guinda-text">play_circle_filled</i></a></td>\
+                            <td class="center"><a href="'+r["url360"]+'" target="_blank"><i class="material-icons prefix guinda-text">play_circle_filled</i></td>'
                         );
                     }
                 });
