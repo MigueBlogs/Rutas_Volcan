@@ -5,7 +5,7 @@
         die();
     }
     require_once("rutas_fns.php");
-    $rutas = getSecuencias();
+    
 
     if (isset($_POST["sequence"]) && isset($_POST["estado"]) 
         && isset($_POST["ruta"]) && isset($_POST["inicio"]) 
@@ -16,7 +16,7 @@
         $result_text = $result ? "Ruta agregada exitosamente" : "No se pudo registrar la ruta";
         $result_color = $result ? "green" : "red";
     }
-    
+    $rutas = getSecuencias();
 
 ?>
 <!DOCTYPE html>
