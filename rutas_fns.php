@@ -146,8 +146,13 @@
         $paramsArray = Array(
         );
 
-        $queryStr = "SELECT ID_SECUENCIA, RUTA, LUGAR_INICIO, LUGAR_FIN, DESTINO_FINAL, URL_FRONTAL, URL_360 FROM RUTAS
-        ORDER BY ID_SECUENCIA DESC";
+        $queryStr = "SELECT R.ID_SECUENCIA, R.RUTA, R.LUGAR_INICIO, R.LUGAR_FIN, R.DESTINO_FINAL, R.URL_FRONTAL, R.URL_360, R.RUTA_SECUNDARIA,
+        E.NOMBRE as ESTADO,
+        (CASE WHEN R.ID_ESTADO_SECUNDARIO is not null THEN (select E2.NOMBRE FROM ESTADO E2 WHERE E2.ID_ESTADO = R.ID_ESTADO_SECUNDARIO) 
+        else NULL END) as ESTADO_SECUNDARIO
+        FROM RUTAS R, ESTADO E
+        WHERE R.ID_ESTADO = E.ID_ESTADO
+        ORDER BY R.ID_RUTA";
 
         $query = oci_parse($conn, $queryStr);
 
@@ -162,9 +167,12 @@
         while ( ($row = oci_fetch_assoc($query)) != false) {
             $result["idSecuencia"] = $row["ID_SECUENCIA"];
             $result["ruta"] = $row["RUTA"];
+            $result["estado"] = $row["ESTADO"];
             $result["lugarInicio"] = $row["LUGAR_INICIO"];
             $result["lugarFin"] = $row["LUGAR_FIN"];
+            $result["estadoSec"] = $row["ESTADO_SECUNDARIO"];
             $result["destinoFinal"] = $row["DESTINO_FINAL"];
+            $result["rutaSec"] = $row["RUTA_SECUNDARIA"];
             $result["urlFrontal"] = $row["URL_FRONTAL"];
             $result["url360"] = $row["URL_360"];
 

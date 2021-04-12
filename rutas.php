@@ -29,6 +29,12 @@
     <title>Rutas de Evacuación del Volcán Popocatepetl</title>
     <!-- CCS -->
     <link rel="stylesheet" href="css/rutas.css">
+    <link rel="stylesheet" href="https://unpkg.com/mapillary-js@2.18.0/dist/mapillary.min.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/4.13/esri/css/main.css">
+    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="./css/slider.css">
+
+    <script src="https://js.arcgis.com/4.13/"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <!-- Materialize -->
         <!-- Compiled and minified CSS -->
@@ -41,7 +47,10 @@
 </head>
 <body>
     <div class="container">
-        <h3 class="center flow-text guinda white-text padded">Rutas de evacuación</h3>
+        <h3 class="center flow-text guinda white-text padded">
+            <a class="left white btn-floating" href="./"><i class="material-icons guinda-text">home</i></a>
+            Rutas de evacuación
+        </h3>
         <?php if (isset($result)) { ?>
         <div class="row" id="div-result">
             <div class="col s12">
@@ -52,130 +61,164 @@
         </div>
         <?php } ?>
         <div class="row">
-            Agregar ruta
-            <button id="btn-add" class="btn-floating tooltipped guinda white-text" data-position="top" data-tooltip="Agregar ruta"><i class="material-icons prefix">add</i></button>
+            <div class="col s6">
+                Agregar ruta
+                <div class="fixed-action-btn">
+                    <a class="btn-floating btn-large red">
+                        <i class="large material-icons">mode_edit</i>
+                    </a>
+                    <ul>
+                        <li><a class="btn-floating red"><i class="material-icons">insert_chart</i></a></li>
+                        <li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>
+                        <li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
+                        <li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>
+                    </ul>
+                </div>
+                <button id="btn-add" class="btn-floating tooltipped guinda white-text" data-position="top" data-tooltip="Agregar ruta"><i class="material-icons prefix">add</i></button>
+            </div>
+        <div class="col s6">
+            <img src="./images/main_logo.jpg" style="height:150%; float: right" alt="DAE">
         </div>
-        <div class="row" style="display:none">
-            <h5 class="flow-text">Añadir ruta</h5>
-            <form action="rutas.php" method="post">
-                <div class="input-field col s12">
-                    <input class="validate" type="text" name="sequence" id="sequence" required minlength="22" maxlength="22" data-length="22">
-                    <label for="sequence">ID MAPILLARY</label>
-                    <span class="helper-text" data-error="Ingresa un ID correcto (22 caracteres)" data-success="">Ingresa el ID generado para MAPILLARY</span>
+        </div>
+        <!-- <div class="row flex" style="display:none"> -->
+        <div class="row flex" style="">
+            <div class="col s6 colForm">
+                <h5 class="flow-text">Añadir ruta</h5>
+                <form action="rutas.php" method="post">
+                    <div class="input-field col s12">
+                        <input class="validate"disabled  type="text" name="sequence" id="sequence" required minlength="22" maxlength="22" data-length="22">
+                        <label for="sequence">ID MAPILLARY</label>
+                        <span class="helper-text" data-error="Ingresa un ID correcto (22 caracteres)" data-success="">Haz click en el mapa para obtener el ID generado por MAPILLARY</span>
+                    </div>
+                    <div class="input-field col s12">
+                        <input class="validate" type="number" name="ruta" id="ruta" required min=1>
+                        <label for="ruta">Número de ruta</label>
+                        <span class="helper-text" data-error="Ingresa el número de la ruta" data-success="">Ingresa el número de la ruta (Número únicamente)</span>
+                    </div>
+                    <div class="input-field col s12">
+                        <select class="validate" name="estado" id="estado" required>
+                            <option disabled selected value="">Selecciona el estado</option>
+                            <?php foreach (getEstados() as $key => $e) { ?>
+                                <option value="<?=$e["ID_ESTADO"]?>"><?=$e["NOMBRE"]?></option>
+                            <?php } ?>
+                        </select>
+                        <label for="estado">Entidad Federativa</label>
+                        <span class="helper-text red-text" style="display:none;">Debes seleccionar la entidad federativa de la ruta</span>
+                    </div>
+                    <div class="input-field col s12">
+                        <input class="validate" type="text" name="inicio" id="inicio" required>
+                        <label for="inicio">Lugar de inicio</label>
+                        <span class="helper-text" data-error="Ingresa donde inicial la ruta" data-success="">Ingresa donde inicial la ruta</span>
+                    </div>
+                    <div class="input-field col s12">
+                        <input class="validate" type="text" name="fin" id="fin" required>
+                        <label for="fin">Lugar final</label>
+                        <span class="helper-text" data-error="Ingresa donde finaliza la ruta" data-success="">Ingresa donde finaliza la ruta</span>
+                    </div>
+                    <div class="input-field col s12">
+                        <input class="validate" type="text" name="final" id="final" required>
+                        <label for="final">Destino final de la ruta</label>
+                        <span class="helper-text" data-error="Ingresa el destino final de la ruta" data-success="">Ingresa el destino final de la ruta</span>
+                    </div>
+                    <div class="input-field col s12">
+                        <input class="validate" type="url" name="frontal" id="frontal" required>
+                        <label for="frontal">URL del video frontal</label>
+                        <span class="helper-text" data-error="Ingresa una URL válida" data-success="">Ingresa la URL del video de la cámara frontal</span>
+                    </div>
+                    <div class="input-field col s12">
+                        <input class="validate" type="url" name="360" id="360" required>
+                        <label for="360">URL del video 360</label>
+                        <span class="helper-text" data-error="Ingresa una URL válida" data-success="">Ingresa la URL del video de la cámara 360</span>
+                    </div>
+                    <div class="input-field col s12">
+                        <select class="validate" name="estado-sec" id="estado_sec">
+                            <option selected value="">Selecciona el estado</option>
+                            <?php foreach (getEstados() as $key => $e) { ?>
+                                <option value="<?=$e["ID_ESTADO"]?>"><?=$e["NOMBRE"]?></option>
+                            <?php } ?>
+                        </select>
+                        <label for="estado_sec">Entidad Federativa Secundario</label>
+                        <span class="helper-text red-text" style="display:none;">Debes seleccionar la entidad federativa de la ruta secundaria</span>
+                    </div>
+                    <div class="input-field col s12">
+                        <input class="validate" type="number" name="ruta-sec" id="ruta_sec" min=1>
+                        <label for="ruta_sec">Número de ruta secundaria</label>
+                        <span class="helper-text" data-error="Ingresa el número de la ruta" data-success="">Ingresa el número de la ruta secundaria (Un solo número únicamente)</span>
+                    </div>
+                    <div class="col s12">
+                        <button id="btn-form" class="btn dorado white-text" type="submit">Registrar ruta</button>
+                        <button id="btn-back" class="btn guinda white-text" type="button">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col s6 colForm">
+                Navega y selecciona la ruta en el mapa al que deseas añadir videos e información
+                <div id="mapillaryMap">
+                    <!-- <div class="slidecontainer" id="slidecontainer" disabled="disabled">
+                        <p style="margin: 0;">Seleccionar rutas por año</p>
+                        <div style="margin:auto;width: 50%;text-align: center;">
+                            <label id="slider-value">2020</label>
+                        </div>
+                        <input type="range" min="2019" max="2020" value="2020" id="slider" class="slider" disabled="disabled">
+                        <label id="slider-min" for="slider" style="float: left;">2019</label>
+                        <label id="slider-max" for="slider" style="float: right;">2020</label>
+                    </div> -->
                 </div>
-                <div class="input-field col s12">
-                    <input class="validate" type="number" name="ruta" id="ruta" required min=1>
-                    <label for="ruta">Número de ruta</label>
-                    <span class="helper-text" data-error="Ingresa el número de la ruta" data-success="">Ingresa el número de la ruta</span>
-                </div>
-                <div class="input-field col s12">
-                    <select class="validate" name="estado" id="estado" required>
-                        <option disabled selected value="">Selecciona el estado</option>
-                        <?php foreach (getEstados() as $key => $e) { ?>
-                            <option value="<?=$e["ID_ESTADO"]?>"><?=$e["NOMBRE"]?></option>
-                        <?php } ?>
-                    </select>
-                    <label for="estado">Entidad Federativa</label>
-                    <span class="helper-text red-text" style="display:none;">Debes seleccionar la entidad federativa de la ruta</span>
-                </div>
-                <div class="input-field col s12">
-                    <input class="validate" type="text" name="inicio" id="inicio" required>
-                    <label for="inicio">Lugar de inicio</label>
-                    <span class="helper-text" data-error="Ingresa donde inicial la ruta" data-success="">Ingresa donde inicial la ruta</span>
-                </div>
-                <div class="input-field col s12">
-                    <input class="validate" type="text" name="fin" id="fin" required>
-                    <label for="fin">Lugar final</label>
-                    <span class="helper-text" data-error="Ingresa donde finaliza la ruta" data-success="">Ingresa donde finaliza la ruta</span>
-                </div>
-                <div class="input-field col s12">
-                    <input class="validate" type="text" name="final" id="final" required>
-                    <label for="final">Destino final de la ruta</label>
-                    <span class="helper-text" data-error="Ingresa el destino final de la ruta" data-success="">Ingresa el destino final de la ruta</span>
-                </div>
-                <div class="input-field col s12">
-                    <input class="validate" type="url" name="frontal" id="frontal" required>
-                    <label for="frontal">URL del video frontal</label>
-                    <span class="helper-text" data-error="Ingresa una URL válida" data-success="">Ingresa la URL del video de la cámara frontal</span>
-                </div>
-                <div class="input-field col s12">
-                    <input class="validate" type="url" name="360" id="360" required>
-                    <label for="360">URL del video 360</label>
-                    <span class="helper-text" data-error="Ingresa una URL válida" data-success="">Ingresa la URL del video de la cámara 360</span>
-                </div>
-                <div class="col s12">
-                    <button id="btn-form" class="btn dorado white-text" type="submit">Registrar ruta</button>
-                    <button id="btn-back" class="btn guinda white-text" type="button">Cancelar</button>
-                </div>
-            </form>
+            </div>
+            
         </div>
         <div class="divider"></div>
-        <div id="tablas">
+        <div id="tablas" style="display:none">
             <h5 class="flow-text">Listado de rutas registradas por año</h5>
             <div class="col s12">
-                <ul class="tabs verde-oscuro">
+                <ul class="tabs tabs-fixed-width verde-oscuro" id="ul-tablas">
                     <li class="tab"><a class="white-text" href="#tabla-na">Sin definir</a></li>
-                    <li class="tab"><a class="white-text" href="#tabla-2019">2019</a></li>
-                    <li class="tab"><a class="active white-text" href="#tabla-2020">2020</a></li>
+                    
                 </ul>
             </div>
-            <div id="tabla-na" class="col s12">
+            <img id="loading" src="./images/loading2.gif" style="width: 100%;">
+            <div id="tabla-na" class="col s12" style="display:none">
                 <table class="striped highlight responsive-table">
                     <thead>
                         <tr>
                             <th>ID MAPILLARY</th>
+                            <th>USUARIO</th>
                             <th>RUTA</th>
+                            <th>ESTADO</th>
                             <th>LUGAR INICIO</th>
                             <th>LUGAR FIN</th>
                             <th>DESTINO FINAL</th>
+                            <th>ESTADO SECUNDARIO</th>
+                            <th>RUTA SECUNDARIA</th>
                             <th>URL FRONTAL</th>
                             <th>URL 360</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        
-                    </tbody>
-                </table>
-            </div>
-            <div id="tabla-2019" class="col s12">
-                <table class="striped highlight responsive-table">
-                    <thead>
+                    <tbody class="hideOnLoad" style="display:none;">
+                        <?php 
+                        foreach ($rutas as $key => $value) { ?>
                         <tr>
-                            <th>ID MAPILLARY</th>
-                            <th>RUTA</th>
-                            <th>LUGAR INICIO</th>
-                            <th>LUGAR FIN</th>
-                            <th>DESTINO FINAL</th>
-                            <th>URL FRONTAL</th>
-                            <th>URL 360</th>
+                            <td class="breakword"><a href="<?=$value["idSecuencia"]?>" target="_blank" rel="noopener noreferrer"><?=$value["idSecuencia"]?></a></td>
+                            <td>-</td>
+                            <td><?=$value["ruta"]?></td>
+                            <td><?=$value["estado"]?></td>
+                            <td><?=$value["lugarInicio"]?></td>
+                            <td><?=$value["lugarFin"]?></td>
+                            <td><?=$value["destinoFinal"]?></td>
+                            <td><?=$value["estadoSec"]?></td>
+                            <td><?=$value["rutaSec"]?></td>
+                            <td class="center"><?=$value["urlFrontal"] ? '<a href="$value["urlFrontal"]" target="_blank"><i class="material-icons prefix guinda-text">play_circle_outline</i></a>': '' ?></td>
+                            <td class="center"><?=$value["url360"] ? '<a href="$value["url360"]" target="_blank"><i class="material-icons prefix guinda-text">play_circle_outline</i></a>': '' ?></td>
                         </tr>
-                    </thead>
-                    <tbody>
-    
+                        <?php } ?>
                     </tbody>
                 </table>
             </div>
-            <div id="tabla-2020" class="col s12">
-                <table class="striped highlight responsive-table">
-                    <thead>
-                        <tr>
-                            <th>ID MAPILLARY</th>
-                            <th>RUTA</th>
-                            <th>LUGAR INICIO</th>
-                            <th>LUGAR FIN</th>
-                            <th>DESTINO FINAL</th>
-                            <th>URL FRONTAL</th>
-                            <th>URL 360</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        
-                    </tbody>
-                </table>
-            </div>
+            
         </div>
         
     </div>
     <script src="./js/rutas.js"></script>
+    <script src="./js/mapillaryRutas.js"></script>
 </body>
 </html>
