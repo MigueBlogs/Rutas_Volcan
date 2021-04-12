@@ -684,5 +684,5 @@ $(function() {
             });
         });
     }
-    loadMap();
+    //loadMap();
 });

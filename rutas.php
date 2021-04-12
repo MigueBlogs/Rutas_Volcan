@@ -9,8 +9,8 @@
 
     if (isset($_POST["sequence"]) && isset($_POST["estado"]) 
         && isset($_POST["ruta"]) && isset($_POST["inicio"]) 
-        && isset($_POST["fin"]) && isset($_POST["final"]) 
-        && isset($_POST["frontal"]) && isset($_POST["360"])) {
+        && isset($_POST["fin"]) && isset($_POST["final"])) {
+        // && isset($_POST["frontal"]) && isset($_POST["360"])) { // estos parámetros son opcionales para la BD
         // Cuando el usuario registre una nueva ruta
         $result = addRuta();
         $result_text = $result ? "Ruta agregada exitosamente" : "No se pudo registrar la ruta";
@@ -60,7 +60,7 @@
             </div>
         </div>
         <?php } ?>
-        <div class="row flex ">
+        <div class="row">
             <div class="col s6">
                 <div class="fixed-action-btn navSup">
                     <a class="btn-floating btn-large red tooltipped" data-position="bottom" data-tooltip="Agregar Ruta">
@@ -75,7 +75,7 @@
                 <!-- <button id="btn-add" class="btn-floating tooltipped guinda white-text" data-position="top" data-tooltip="Agregar ruta"><i class="material-icons prefix">add</i></button> -->
             </div>
             <div class="col s6">
-                <img src="./images/main_logo.jpg" style="height:10%; float: right" alt="DAE">
+                <img src="./images/main_logo.jpg" style="height:auto; max-height: 4em;" alt="DAE" class="right">
             </div>
         </div>
         <div class="row flex" style="display:none">
@@ -84,7 +84,7 @@
                 <h5 class="flow-text">Añadir ruta</h5>
                 <form action="rutas.php" method="post">
                     <div class="input-field col s12">
-                        <input class="validate"disabled  type="text" name="sequence" id="sequence" required minlength="22" maxlength="22" data-length="22">
+                        <input class="validate" readonly type="text" name="sequence" id="sequence" required minlength="22" maxlength="22" data-length="22">
                         <label for="sequence">ID MAPILLARY</label>
                         <span class="helper-text" data-error="Ingresa un ID correcto (22 caracteres)" data-success="">Haz click en el mapa para obtener el ID generado por MAPILLARY</span>
                     </div>
@@ -119,12 +119,12 @@
                         <span class="helper-text" data-error="Ingresa el destino final de la ruta" data-success="">Ingresa el destino final de la ruta</span>
                     </div>
                     <div class="input-field col s12">
-                        <input class="validate" type="url" name="frontal" id="frontal" required>
+                        <input class="validate" type="url" name="frontal" id="frontal">
                         <label for="frontal">URL del video frontal</label>
                         <span class="helper-text" data-error="Ingresa una URL válida" data-success="">Ingresa la URL del video de la cámara frontal</span>
                     </div>
                     <div class="input-field col s12">
-                        <input class="validate" type="url" name="360" id="360" required>
+                        <input class="validate" type="url" name="360" id="360">
                         <label for="360">URL del video 360</label>
                         <span class="helper-text" data-error="Ingresa una URL válida" data-success="">Ingresa la URL del video de la cámara 360</span>
                     </div>
