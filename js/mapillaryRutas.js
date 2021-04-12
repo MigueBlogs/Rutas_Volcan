@@ -753,12 +753,21 @@ $(function() {
             });
         });
     }
-    // loadMap();
+    loadMap([-93.189812,17.377836]);
 
     $('.btn-add').on('click', function(){
         var txt = $(this).attr("center");
         var obj = JSON.parse(txt);
+        // console.log(view);
+        view.goTo({
+            center: obj
+          })
+          .catch(function(error) {
+            if (error.name != "AbortError") {
+               console.error(error);
+            }
+          });
         // console.log(obj);
-        loadMap(obj);
+        // loadMap(obj);
     });
 });
