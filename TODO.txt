@@ -1,7 +1,7 @@
 - Agregar botón con URL al portal del volcán de Chiapas en la página de preparados
-- Modificar mapa para añadir ruta, en donde se muestre de color rojo las que no tienen datos y de azul las que ya tienen datos.
 - [Extra] Agregar filtro al mapa para buscar ruta por ID de mapillary
 
 Finalizado:
+- Modificar mapa para añadir ruta, en donde se muestre de color rojo las que no tienen datos y de azul las que ya tienen datos.
 - Botón para eliminar ruta de la BD.
 - Arreglar URLs de videos en tablas por año.
