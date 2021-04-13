@@ -195,7 +195,7 @@
                         <?php 
                         foreach ($rutas as $key => $value) { ?>
                         <tr>
-                            <td class="breakword"><a href="<?=$value["idSecuencia"]?>" target="_blank" rel="noopener noreferrer"><?=$value["idSecuencia"]?></a></td>
+                            <td class="breakword"><a href="https://www.mapillary.com/map/s/<?=$value["idSecuencia"]?>" target="_blank" rel="noopener noreferrer"><?=$value["idSecuencia"]?></a></td>
                             <td>-</td>
                             <td><?=$value["ruta"]?></td>
                             <td><?=$value["estado"]?></td>
