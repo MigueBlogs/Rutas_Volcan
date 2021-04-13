@@ -151,17 +151,12 @@
             </div>
             <div class="col s6 colForm">
                 Navega y selecciona la ruta en el mapa al que deseas añadir videos e información
-                <div id="mapillaryMap">
-                    <!-- <div class="slidecontainer" id="slidecontainer" disabled="disabled">
-                        <p style="margin: 0;">Seleccionar rutas por año</p>
-                        <div style="margin:auto;width: 50%;text-align: center;">
-                            <label id="slider-value">2020</label>
-                        </div>
-                        <input type="range" min="2019" max="2020" value="2020" id="slider" class="slider" disabled="disabled">
-                        <label id="slider-min" for="slider" style="float: left;">2019</label>
-                        <label id="slider-max" for="slider" style="float: right;">2020</label>
-                    </div> -->
+                <div id="map-preloader">
+                    <div class="progress" style="padding: 0.5em 0;">
+                        <div style="width: 0%" class="indeterminate guinda"></div>
+                    </div>
                 </div>
+                <div id="mapillaryMap"></div>
             </div>
             
         </div>

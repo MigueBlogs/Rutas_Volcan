@@ -71,17 +71,6 @@ $(function() {
             const locateWidget = new Locate({ view: view });
             const searchWidget = new Search({ view: view });
             const FullScreenWidget = new Fullscreen({ view: view });
-            // const slider = new Slider({
-            //     container: "slider",
-            //     min: 2019,
-            //     max: 2020,
-            //     values: [ 2020 ],
-            //     steps: 1,
-            //     visibleElements: {
-            //         rangeLabels: true,
-            //         labels: true
-            //     }
-            // });
     
             view.ui.add(basemapGallery, "top-left");
             view.ui.add(homeWidget, "top-left");
@@ -228,6 +217,11 @@ $(function() {
                     name: "user_key",
                     alias: "Id de Usuario",
                     type: "string"
+                },
+                {
+                    name: "BD",
+                    alias: "BD",
+                    type: "string"
                 }
             ];
     
@@ -262,13 +256,37 @@ $(function() {
                     color:  [255, 0, 0]
                 }
             };
+
+            const routeRenderer_custom = {
+                type: "unique-value",  // autocasts as new UniqueValueRenderer()
+                field: "BD",
+                defaultSymbol: { type: "simple-line", width: 4, color:  [255, 0, 0] },
+                uniqueValueInfos: [
+                    {
+                        value: "Y",
+                        symbol: {
+                            type: "simple-line",
+                            width: 4,
+                            color:  [33, 148, 243]
+                        }
+                    }, 
+                    {
+                        value: "N",
+                        symbol: {
+                            type: "simple-line",
+                            width: 4,
+                            color:  [244, 67, 54]
+                        }
+                    }
+                ],
+            }
     
             var mapillaryRouteLayer = new FeatureLayer({
                 id: "mapillarySequences",
                 fields: routesFields,
                 geometryType: "polyline",
                 popupTemplate: routeTemplate,
-                renderer: routeRenderer,
+                renderer: routeRenderer_custom,
                 source: [],
             });
     
@@ -298,9 +316,6 @@ $(function() {
     
                     var sequenceId = graphic["attributes"]["key"];
                     view.goTo(graphic, { duration: 1500 });
-                    // console.log("Obteniendo Info");
-                    // console.log(graphic["attributes"]);
-                    // console.log(sequenceId);
                     escribeDatos(sequenceId);
                     
                     getSequenceInfo(map, view, event.mapPoint, sequenceId);
@@ -502,162 +517,72 @@ $(function() {
             });
         });
     }
-    
-    function loadSequences2(map, mapView) {
-        require([
-            "esri/Graphic",
-            "esri/layers/FeatureLayer",
-        ], function(
-            Graphic,
-            FeatureLayer
-        ) {
-            const endpoint = "/sequences";
-            const parameters = {
-                per_page: 1000,
-                usernames: "cenacom",
-                client_id: "b3d6QUR0Q0FqWXVBa3dCZF8taW5ldzo5MDI3OWVkMmQyZDhjMmMx"
+
+    function getSequenceInfoBD(data, Graphic) {
+        var layer = map.findLayerById("mapillarySequences");
+            layer.source.removeAll();
+        var tasks = [];
+        let index = 1;
+        let total_features = Object.keys(data["features"]).length;
+        //console.log(total_features);
+        data["features"].forEach(function(feature) {
+            const path = feature["geometry"]["coordinates"];
+            const properties = feature["properties"];
+            const fecha_creado = new Date(properties["captured_at"]);
+
+            const polyline = {
+                type: "polyline",
+                paths: path
             };
-    
-            $.ajax({
-                url: mapillaryBase + endpoint,
-                type: "GET",
-                data: parameters,
-                dataType: "json",
-                success: function(data) {
-                    let graphics = [];
+              
+            var polylineSymbol_red = {
+                type: "simple-line",
+                color: [244, 67, 54],
+                width: 16
+            };
+            var polylineSymbol_blue = {
+                type: "simple-line",
+                color: [33, 148, 243],
+                width: 16
+            };
 
-                    let tmp = map.findLayerById("mapillarySequences");
-                    if (tmp)
-                        map.remove(tmp);
-    
-                    data["features"].forEach(function(feature) {
-                        const path = feature["geometry"]["coordinates"];
-                        const properties = feature["properties"];
-                        const fecha_creado = new Date(properties["captured_at"]);
-                        if (fecha_creado.getFullYear() != selected_year){
-                            return;
-                        }
-    
-                        const polyline = {
-                            type: "polyline",
-                            paths: path
-                        };
-    
-                        var polylineSymbol = {
-                            type: "simple-line",
-                            color: [255, 0, 0],
-                            width: 16
-                        };
-    
-                        var polylineAtt = properties;
-
-                        graphics.push(new Graphic({
+            const parameters = {
+                sequenceId: properties["key"]
+            }
+            var polylineAtt = properties;
+            polylineAtt["BD"] = "N";
+            tasks.push(
+                $.get("rutas_fns.php", parameters, function(data){
+                    let graphic;
+                    if (data.length > 0){
+                        polylineAtt["BD"] = "Y";
+                        graphic = new Graphic({
                             geometry: polyline,
-                            symbol: polylineSymbol,
+                            symbol: polylineSymbol_blue,
                             attributes: polylineAtt
-                        }));
-                    });
-                    console.log(graphics.length);
-    
-                    const routesFields = [
-                        {
-                            name: "ObjectID",
-                            alias: "ObjectID",
-                            type: "oid"
-                        },
-                        {
-                            name: "captured_at",
-                            alias: "Fecha de captura",
-                            type: "string"
-                        },
-                        {
-                            name: "key",
-                            alias: "Id de secuencia",
-                            type: "string"
-                        },
-                        {
-                            name: "username",
-                            alias: "Usuario",
-                            type: "string"
-                        },
-                        {
-                            name: "created_at",
-                            alias: "Fecha de creación",
-                            type: "string"
-                        },
-                        {
-                            name: "user_key",
-                            alias: "Id de Usuario",
-                            type: "string"
-                        }
-                    ];
-            
-                    var routeTemplate = {
-                        title: "Ruta de evacuación",
-                        content: [
-                            {
-                                type: "fields",
-                                fieldInfos: [
-                                    {
-                                        fieldName: "captured_at",
-                                        label: "Fecha de captura"
-                                    },
-                                    {
-                                        fieldName: "username",
-                                        label: "Usuario"
-                                    },
-                                    {
-                                        fieldName: "key",
-                                        label: "Llave de secuencia"
-                                    }
-                                ]
-                            }
-                        ]
-                    };
-            
-                    const routeRenderer = {
-                        type: "simple",  // autocasts as new SimpleRenderer()
-                        symbol: {
-                            type: "simple-line",
-                            width: 4,
-                            color:  [255, 0, 0]
-                        }
-                    };
-    
-                    mapillaryRouteLayer = new FeatureLayer({
-                        id: "mapillarySequences",
-                        fields: routesFields,
-                        geometryType: "polyline",
-                        popupTemplate: routeTemplate,
-                        renderer: routeRenderer,
-                        source: graphics,
-                    });
-    
-                    map.layers.add(mapillaryRouteLayer);
-                    
-                    // let layer = map.findLayerById("mapillarySequences");
-                    // layer.source.removeAll();
-                    // layer.applyEdits({
-                    //     addFeatures: graphics
-                    // }).then(function(result) {
-                        
-                    // }, function(err) { console.log(err) });
-    
-                    //console.log(layer);
-                    loading = false;
-                    $('#slider-value').text(selected_year);
-                    $('#slider').prop("disabled", false);
-                    $('#slidecontainer').attr("disabled", false);
-                },
-                error: function(error) {
-                    console.log("Error al obtener la capa de secuencias");
-                    loading = false;
-                    $('#slider-value').text(selected_year);
-                    $('#slider').prop("disabled", false);
-                    $('#slidecontainer').attr("disabled", false);
-                }
-            });
+                        });
+                    }
+                    else {
+                        graphic = new Graphic({
+                            geometry: polyline,
+                            symbol: polylineSymbol_red,
+                            attributes: polylineAtt
+                        });
+                    }
+                    layer.applyEdits({
+                        addFeatures: [graphic]
+                    }).then(function(result) {
+                        // console.log('Refresh');
+                        layer.refresh();
+                    }, function(err) { console.log(err) });
+                }, "json")
+            );
+            tmp = (index*100)/total_features + "%";
+            //console.log(tmp);
+            $('.progress .determinate').css({'width': tmp});
+            index++;
         });
+        return tasks;
     }
 
     function loadSequences(map, mapView, caja, ) {
@@ -680,45 +605,17 @@ $(function() {
                 data: parameters,
                 dataType: "json",
                 success: function(data) {
-                    var graphics = [];
+                    $('.indeterminate.guinda').removeClass('indeterminate').addClass('determinate').css({width: "0%"});
+                    var completed = getSequenceInfoBD(data, Graphic);
 
-                    data["features"].forEach(function(feature) {
-                        const path = feature["geometry"]["coordinates"];
-                        const properties = feature["properties"];
-                        const fecha_creado = new Date(properties["captured_at"]);
-                        // if (fecha_creado.getFullYear() != selected_year){
-                        //     return;
-                        // }
-    
-                        const polyline = {
-                            type: "polyline",
-                            paths: path
-                        };
-                          
-                        var polylineSymbol = {
-                            type: "simple-line",
-                            color: [255, 0, 0],
-                            width: 16
-                        };
-                          
-                          
-                        var polylineAtt = properties;  
-                        graphics.push(new Graphic({
-                            geometry: polyline,
-                            symbol: polylineSymbol,
-                            attributes: polylineAtt
-                        }));
-                    });
-
-                    var layer = map.findLayerById("mapillarySequences");
-                    layer.source.removeAll();
-                    layer.applyEdits({
-                        addFeatures: graphics
-                    }).then(function(result) {
-
-                    }, function(err) { console.log(err) });
-
-                    //console.log(layer);
+                    Promise.all(completed).then(() => {
+                        $('.progress .determinate').css({'width': "100%"})
+                        $('#map-preloader').hide('slow');
+                        
+                      }).catch(() => {
+                        // all requests finished but one or more failed
+                      })
+                    
                 },
                 error: function(error) {
 
