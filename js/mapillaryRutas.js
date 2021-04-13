@@ -303,6 +303,11 @@ $(function() {
             map.layers.add(mapillaryRoutePointActiveLayer);
             // map.layers.add(refugiosLayer);
     
+            view.when(setTimeout(function(){
+                $('.esri-input').addClass('browser-default');
+            }, 2000),
+            function(error){    
+            });
             loadSequences(map, view);
     
             view.on("click", function(event) {
