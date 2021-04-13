@@ -16,6 +16,12 @@
         $result_text = $result ? "Ruta agregada exitosamente" : "No se pudo registrar la ruta";
         $result_color = $result ? "green" : "red";
     }
+    if(isset($_POST["deleteSecuence"])){
+        $result = deleteRuta();
+        $result_text = $result ? "Ruta ".$_POST['deleteSecuence']." eliminada exitosamente" : "No se pudo eliminar la ruta";
+        $result_color = $result ? "green" : "red";
+    }
+
     $rutas = getSecuencias();
 
 ?>
@@ -82,7 +88,7 @@
         <!-- <div class="row flex" style=""> -->
             <div class="col s6 colForm">
                 <h5 class="flow-text">Añadir ruta</h5>
-                <form action="rutas.php" method="post">
+                <form id="formAdd" action="rutas.php" method="post">
                     <div class="input-field col s12">
                         <input class="validate" readonly type="text" name="sequence" id="sequence" required minlength="22" maxlength="22" data-length="22">
                         <label for="sequence">ID MAPILLARY</label>
@@ -189,6 +195,7 @@
                             <th>RUTA SECUNDARIA</th>
                             <th>URL FRONTAL</th>
                             <th>URL 360</th>
+                            <th>ACCIÓN</th>
                         </tr>
                     </thead>
                     <tbody class="hideOnLoad" style="display:none;">
@@ -206,13 +213,28 @@
                             <td><?=$value["rutaSec"]?></td>
                             <td class="center"><?=$value["urlFrontal"] ? '<a href="'.$value["urlFrontal"].'" target="_blank"><i class="material-icons prefix guinda-text">play_circle_outline</i></a>': '' ?></td>
                             <td class="center"><?=$value["url360"] ? '<a href="'.$value["url360"].'" target="_blank"><i class="material-icons prefix guinda-text">play_circle_outline</i></a>': '' ?></td>
+                            <td class="center"><a class="modal-trigger" href="#modalConfirm"><i value="<?=$value["idSecuencia"]?>" class="borrarRuta red-text material-icons">delete_forever</i></a></td>
                         </tr>
                         <?php } ?>
                     </tbody>
                 </table>
             </div>
-            
+            <div id="modalConfirm" class="modal">
+                <div class="modal-content">
+                    <h4>ELIMINAR RUTA</h4>
+                    <p>¿Estás seguro de que quieres eliminar la ruta <span id="secuenciaMapillary"></span>?</p>
+                    <p>No podrás deshacer esta acción</p>
+                </div>
+                <div class="modal-footer">
+                    <form method="post">
+                        <button id="buttonOK" class="waves-effect waves-light btn green" type="submit" value="" name="deleteSecuence">Aceptar
+                        </button>
+                        <a href="#!" class="modal-close waves-effect waves-light btn red">Cancelar</a>
+                    </form>
+                </div>
+            </div>
         </div>
+        
         
     </div>
     <script src="./js/rutas.js"></script>

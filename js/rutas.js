@@ -79,6 +79,7 @@ function rellenaTabla() {
                                     <th>RUTA SECUNDARIA</th>\
                                     <th>URL FRONTAL</th>\
                                     <th>URL 360</th>\
+                                    <th>ACCIÓN</th>\
                                 </tr>\
                             </thead>\
                             <tbody>\
@@ -130,13 +131,20 @@ $(document).ready(function(){
 
     $("#estado").css({display: "block", height: 0, padding: 0, width: 0, position: 'absolute'}); // necesario para validar el select
     
-    $('form').on('submit', function(e){
+    $('#formAdd').on('submit', function(e){
         return validaForm();
     });
     // Define el año en el que fue tomada la ruta
     
     rellenaTabla();
     
+    //acción para pasar la secuencia al modal y confirmar acción
+    $('.borrarRuta').on('click', function(){
+        // console.log($(this).attr("value"));
+        $('#secuenciaMapillary').text($(this).attr("value"));
+        $('#buttonOK').val($(this).attr("value"));
+    });
+
 
     $('.btn-add').on('click', function(){
         $('.divider').hide();
@@ -160,6 +168,7 @@ $(document).ready(function(){
         hoverEnabled: false
     });
     $('.tooltipped').tooltip();
+    $('.modal').modal();
 });
 
 
