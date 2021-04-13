@@ -204,8 +204,8 @@
                             <td><?=$value["destinoFinal"]?></td>
                             <td><?=$value["estadoSec"]?></td>
                             <td><?=$value["rutaSec"]?></td>
-                            <td class="center"><?=$value["urlFrontal"] ? '<a href="$value["urlFrontal"]" target="_blank"><i class="material-icons prefix guinda-text">play_circle_outline</i></a>': '' ?></td>
-                            <td class="center"><?=$value["url360"] ? '<a href="$value["url360"]" target="_blank"><i class="material-icons prefix guinda-text">play_circle_outline</i></a>': '' ?></td>
+                            <td class="center"><?=$value["urlFrontal"] ? '<a href="'.$value["urlFrontal"].'" target="_blank"><i class="material-icons prefix guinda-text">play_circle_outline</i></a>': '' ?></td>
+                            <td class="center"><?=$value["url360"] ? '<a href="'.$value["url360"].'" target="_blank"><i class="material-icons prefix guinda-text">play_circle_outline</i></a>': '' ?></td>
                         </tr>
                         <?php } ?>
                     </tbody>
