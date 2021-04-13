@@ -272,6 +272,32 @@
         }
     }
 
+    function deleteRuta() {
+        $conn = dbConnect(user, pass, server);
+        
+        $paramsArray = Array(
+            ":id_seq" => $_POST['deleteSecuence']
+        );
+
+        $queryStr = "DELETE FROM rutas WHERE id_secuencia = :id_seq";
+
+        $query = oci_parse($conn, $queryStr);
+        
+        foreach ($paramsArray as $key => $value) {
+            oci_bind_by_name($query, $key, $paramsArray[$key]);
+        }
+
+        if(!oci_execute($query, OCI_NO_AUTO_COMMIT)) {
+            oci_rollback($conn);
+            trigger_error("No se pudo eliminar RUTASVOLCAN.RUTAS", E_USER_ERROR);
+            return false;
+        } else {
+            oci_commit($conn);
+            dbClose($conn, $query);
+            return true;
+        }
+    }
+
     function getReports(){
         require_once("db_global.php");
 

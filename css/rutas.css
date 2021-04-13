@@ -96,3 +96,7 @@ body {
 .row{
     margin-bottom: 40px !important;
 }
+
+.modal{
+    width: 25% !important;
+}
