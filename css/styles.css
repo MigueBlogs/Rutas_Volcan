@@ -33,7 +33,7 @@
 }
 
 header {
-  position: fixed;
+  position: sticky;
   width: 100%;
   z-index: 2;
   top: 0;
@@ -302,7 +302,7 @@ body {
   overflow: auto;
 }
 
-iframe {
+iframe:not(#iFrame-nav-gob):not(#MyIframe) {
   height: 100%;
   width: 100%;
 }

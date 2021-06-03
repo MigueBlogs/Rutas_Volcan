@@ -22,8 +22,9 @@
     
 </head>
 <body>
-    <div class="container">
-        <div class="center">
+    <iframe id="iFrame-nav-gob" src="/nav.html" frameborder="0" style="width: 100%;height: 60px;margin-bottom: -5px;"></iframe>
+    <div class="container" style="margin-bottom: 2em;">
+        <div class="center hide">
             <img style="max-width: 80%; height: 5em;" src="http://www.atlasnacionalderiesgos.gob.mx/Imagenes/Logos/SSyPC_CNPC_h.png" alt="gob">
         </div>
         <h3 class="center">Sistema de Rutas de evacuación</h3>
@@ -64,5 +65,9 @@
         </div>
     </div>
     <script src="./js/login.js"></script>
+
+    <iframe id="MyIframe" src="/footer.html" scrolling="no" width="100%" height="425.5px" style="border: 0px;"></iframe>
+    <script src="/js/nav-gob.js"></script>
+    <script src="/js/footer.js"></script>
 </body>
 </html>
